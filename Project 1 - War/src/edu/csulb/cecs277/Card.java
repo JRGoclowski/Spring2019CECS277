@@ -91,7 +91,17 @@ public class Card {
 			
 			visible = vis;
 		}
-
+	
+	public String showCard()
+	{
+		String cardID;
+		if (isVisible())
+			{
+				cardID = new String (getRank() + " of " + getSuit());
+				return showCard();
+			}
+	}
+	
 	public String getRank()
 		{
 			return rank;
@@ -137,8 +147,10 @@ public class Card {
 			return visible;
 		}
 
-	public void setVisible(boolean visible)
+	public void makeVisible()
 		{
-			this.visible = visible;
+			visible = true;
 		}
+	
+	
 }
