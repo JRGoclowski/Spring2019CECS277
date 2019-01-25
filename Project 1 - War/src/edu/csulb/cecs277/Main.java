@@ -8,7 +8,9 @@ public class Main {
 		int size = test.getDeckSize();
 		for (int i = 0; i < size; i ++)
 			{
-				
+				Card x =test.Deal();
+				x.makeVisible();
+				System.out.println(x.showCard());
 			}
 	}
 }

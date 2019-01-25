@@ -98,7 +98,12 @@ public class Card {
 		if (isVisible())
 			{
 				cardID = new String (getRank() + " of " + getSuit());
-				return showCard();
+				return cardID;
+			}
+		else
+			{
+				cardID = "??? of ???";
+				return cardID;
 			}
 	}
 	
@@ -150,6 +155,11 @@ public class Card {
 	public void makeVisible()
 		{
 			visible = true;
+		}
+	
+	public void makeInvisible()
+		{
+			visible = false;
 		}
 	
 	
