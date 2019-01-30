@@ -2,11 +2,27 @@ package edu.csulb.cecs277;
 
 public class GameRunner {
 	
-	public void showCardsInPlay()
+	Board gameBoard = new Board();
+	
+	public void execute()
+	{
+		while (true)
+			{
+				PlayRound();
+			}
+		
+	}
+	
+	public void PlayRound()
 		{
-			for (int i = playerPlayed.getDeckSize(); i > 0; i--)
+			if (gameBoard.BeginRound())
 				{
-					
+					//ComputerFollowUp
+					int x = 5;
+				}
+			else
+				{
+					gameBoard.FollowupRound(true);
 				}
 		}
 
