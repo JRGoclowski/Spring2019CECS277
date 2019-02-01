@@ -1,14 +1,12 @@
 package edu.csulb.cecs277;
 
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Collections;
 
 public class Deck 
 {
 	LinkedList <Card> deck = new LinkedList <Card>();
 	private int deckSize;
-	private Random rng;
 	
 	public Deck(boolean isEmpty)
 		{
@@ -25,7 +23,9 @@ public class Deck
 		}
 	
 	
-	
+	/**
+	 * Creates all 52 different cards in a deck
+	 */
 	private void AddAllCards()
 		{
 			int i,j;
@@ -40,30 +40,51 @@ public class Deck
 			
 		}
 	
+	/**
+	 * Shuffles the deck
+	 */
 	private void Shuffle()
 		{
 			Collections.shuffle(deck);
 		}
 	
+	/**
+	 * deals the top card of the deck
+	 * @return Card - returns the top card of a deck.
+	 */
 	public Card Deal()
 	{
 		return deck.removeFirst();
 	}
 	
+	/**
+	 * adds a card to the bottom of the deck
+	 * @param addition - the card to be added
+	 */
 	public void Add(Card addition)
 	{
 		deck.add(addition);
 	}
 	
+	/**
+	 * completely empties the deck into another deck
+	 * @param targetDeck - the deck to be emptied into.
+	 */
 	public void EmptyToDeck(Deck targetDeck)
 		{
 			int cardCount = getDeckSize();
 			for (int i = 0; i < cardCount; i ++)
 				{
-					targetDeck.Add(Deal());
+					Card x = Deal();
+					targetDeck.Add(x);
 				}
 		}
 	
+	/**
+	 * Checks the deck size and compares it against the number required
+	 * @param cardsRequired - the minimum number of cards needed for an action
+	 * @return boolean - whether or not the deck contains enough cards
+	 */
 	public boolean hasEnoughCards(int cardsRequired)
 	{
 		if (cardsRequired > getDeckSize())
@@ -76,6 +97,10 @@ public class Deck
 			}
 	}
 	
+	/**
+	 *checks if the deck is empty 
+	 * @return boolean - whether or not the deck is empty
+	 */
 	public boolean isEmpty()
 	{
 		CountDeckSize();
@@ -94,49 +119,3 @@ public class Deck
 		}
 }
 
-/*//Create two lists to split the deck into
-LinkedList <Card> stackOne = new LinkedList <Card>();
-LinkedList <Card> stackTwo = new LinkedList <Card>();
-//Shuffles the decks by taking from one of the two stacks randomly, done a number of times
-//according to param timesShuffled
-for (int l = 0; l < timesShuffled; l++); //TODO make sure this shuffles the right times according to param
-	{
-		int i,j;
-		CountDeckSize();
-		//Splits the deck in half
-		for (i = 0; i< deckSize/2; i++)
-			{
-				stackOne.add(deck.removeFirst());
-			}
-		while (!deck.isEmpty())
-			{
-				stackTwo.add(deck.removeFirst());
-			}
-		//Randomly chooses until one stack is empty
-		while (!stackOne.isEmpty() && !stackTwo.isEmpty())
-			{
-				int toss = rng.nextInt(1);
-				if (toss == 0)
-					{
-						deck.add(stackOne.removeFirst());
-					}
-				else
-					{
-						deck.add(stackTwo.removeFirst());
-					}
-			}
-		if (stackOne.isEmpty())
-			{
-				while (!stackTwo.isEmpty())
-					{
-						deck.add(stackTwo.removeFirst());
-					}
-			}
-		else
-			{
-				while (!stackOne.isEmpty())
-					{
-						deck.add(stackOne.removeFirst());
-					}
-			}
-	}*/

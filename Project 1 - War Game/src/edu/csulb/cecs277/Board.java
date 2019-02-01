@@ -25,11 +25,51 @@ public class Board {
 		opponentPlayed = new Deck(true);
 	}
 	
+	public void ResetBoard()
+	{
+		opponentContest = null;
+		playerContest = null;
+		opponentFollowup = null;
+		playerFollowup = null;
+		
+	}
+	
+	/*public void StackDeck(int cardsToKeep)//TODO Delete method
+	{
+		opponentDeck.EmptyToDeck(playerDeck);
+		for (int i = 0; i < cardsToKeep; i++)
+			{
+				Card x =  playerDeck.Deal();
+				opponentDeck.Add(x);
+			}
+	}*/
+	
+	/**
+	 * Allows external classes to begin a round on the board.
+	 * @return boolean - returns whether or not the player won the round.
+	 */
 	public boolean BeginRound()
 		{
 			return ContestRound();			
 		}
 	
+	/**
+	 * Collects all cards that were played in the round and adds them to the winner's deck
+	 * @param isPlayerCards - boolean set to true if the player is the winner and gets the cards
+	 */
+	public void CollectCards(boolean isPlayerCards)
+	{
+		if (isPlayerCards)
+			{
+				playerPlayed.EmptyToDeck(playerDeck);
+				opponentPlayed.EmptyToDeck(playerDeck);
+			}
+		else
+			{
+				playerPlayed.EmptyToDeck(opponentDeck);
+				opponentPlayed.EmptyToDeck(opponentDeck);
+			}
+	}
 	
 	/**
 	 * checks current cards in play, and determines whether the current board state is a war
@@ -78,13 +118,13 @@ public class Board {
 				{
 					playedCard = playerDeck.Deal();
 					playerPlayed.Add(playedCard);
-					System.out.println("Player Card Played!");
+					//System.out.println("Player Card Played!");
 				}
 			else
 				{
 					playedCard = opponentDeck.Deal();
 					opponentPlayed.Add(playedCard);
-					System.out.println("Opponent Card Played!");
+					//System.out.println("Opponent Card Played!");
 				}
 			return playedCard;
 		}
@@ -113,8 +153,12 @@ public class Board {
 	 */
 	private boolean ContestRound()
 		{
+			System.out.println("Now for the contest...");
+			System.out.println();
 			playerContest = ContestCard(true);
+			System.out.println("You played " + playerContest.showCard() + ".");
 			opponentContest = ContestCard(false);
+			System.out.println("You opponent played " + opponentContest.showCard() + ".");
 			if (checkWar())
 				{
 					if (!playerDeck.isEmpty()&& !opponentDeck.isEmpty())
@@ -125,6 +169,12 @@ public class Board {
 			return checkPlayerWin();
 		}
 	
+	
+	/**
+	 * This method performs the functionality of the follow up round for both players if desired
+	 * @param isPlayerCard - boolean that is true of the player is the one requesting followup. False causes the computer to perform the round
+	 * @return boolean - returns if the followup round was won
+	 */
 	public boolean FollowupRound (boolean isPlayerCard)
 	{
 		Card Followup = FieldCard(isPlayerCard);
@@ -172,6 +222,7 @@ public class Board {
 							FieldCard(true);
 							FieldCard(false);
 						}
+					System.out.println("Both players have fielded three cards!");
 					return ContestRound();
 				}
 			else
@@ -195,11 +246,14 @@ public class Board {
 					{
 						FieldCard(true);
 					}
+				System.out.println("The player has fielded 3 cards.");
 				cardsRemaining = opponentDeck.getDeckSize();
 				for (int i = 0; i < cardsRemaining-1; i++)
 					{
 						FieldCard(false);
 					}
+				System.out.println("The opponent has fielded their last " + (cardsRemaining-1) + " spare cards." );
+				
 				return ContestRound();
 			}
 		else
@@ -209,15 +263,28 @@ public class Board {
 					{
 						FieldCard(false);
 					}
+				System.out.println("The opponent has fielded 3 cards.");
 				cardsRemaining = playerDeck.getDeckSize();
 				for (int i = 0; i < cardsRemaining-1; i++)
 					{
 						FieldCard(true);
 					}
+				System.out.println("The player has fielded their last " + (cardsRemaining-1) + " spare cards." );
+				
 				return ContestRound();
 			}
 			
 	}
+	
+	/**
+	 * checks if both decks contain enough cards for a round of war.
+	 * @return boolean - true if both decks have at least 4 cards
+	 */
+	private boolean BothDecksSufficient()
+		{
+			return (playerDeck.hasEnoughCards(4) && opponentDeck.hasEnoughCards(4));
+		}
+
 	
 	public Card getOpponentFollowup()
 		{
@@ -228,12 +295,7 @@ public class Board {
 		{
 			return playerFollowup;
 		}
-
-	private boolean BothDecksSufficient()
-		{
-			return (playerDeck.hasEnoughCards(4) && opponentDeck.hasEnoughCards(4));
-		}
-	
+		
 	public int getCardsInPlay()
 	{
 		return playerPlayed.getDeckSize() + opponentPlayed.getDeckSize();
@@ -244,21 +306,23 @@ public class Board {
 			return playerDeck;
 		}
 
-
-
 	public Deck getOpponentDeck()
 		{
 			return opponentDeck;
 		}
 
-
-
 	public Deck getPlayerPlayed()
 		{
 			return playerPlayed;
 		}
+	
+	public Card getOpponentContest() {
+		return opponentContest;
+	}
 
-
+	public Card getPlayerContest() {
+		return playerContest;
+	}
 
 	public Deck getOpponentPlayed()
 		{

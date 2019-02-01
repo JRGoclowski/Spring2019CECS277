@@ -94,6 +94,15 @@ public class Card {
 	
 	public String showCard()
 	{
+		makeVisible();
+		String cardID = getCardID();
+		makeInvisible();
+		return cardID;
+		
+	}
+	
+	private String getCardID()
+	{
 		String cardID;
 		if (isVisible())
 			{
