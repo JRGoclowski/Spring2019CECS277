@@ -6,6 +6,14 @@ public class Card {
 	private int value, rankValue;
 	private boolean visible;
 	
+	/**
+	 * Constructor for a card
+	 * @param ran - The string form of the rank
+	 * @param sui - The string form of the suit 
+	 * @param val - The int value of the card used for blackjack and the like
+	 * @param vis - Whether or not the card's values should be visible
+	 * @param ranVal - the int value of the rank
+	 */
 	public Card(String ran, String sui, int val, boolean vis, int ranVal)
 		{
 			rank = ran;
@@ -15,6 +23,12 @@ public class Card {
 			visible = vis;
 		}
 	
+	/**
+	 * Constructor for a card
+	 * @param ran - The string form of the rank
+	 * @param sui - The string form of the suit
+	 * @param vis - whether or not the card's values should be visible
+	 */
 	public Card(String ran, String sui, boolean vis)
 		{
 			rank = ran;
@@ -53,6 +67,12 @@ public class Card {
 			visible = vis;
 		}
 	
+	/**
+	 * Constructor for a card
+	 * @param ran - int form of the rank, from 0 for ace to 12 for king
+	 * @param sui - int form of suit by alphabetical order
+	 * @param vis - whether or not the card's values should be visible
+	 */
 	public Card(int ran, int sui, boolean vis)
 		{
 			switch (ran)
@@ -92,6 +112,10 @@ public class Card {
 			visible = vis;
 		}
 	
+	/**
+	 * Sets a card as visible, gets the ID string, then returns it to invisible
+	 * @return cardID - The string form of the card "[rank] of [suit]"
+	 */
 	public String showCard()
 	{
 		makeVisible();
@@ -101,6 +125,10 @@ public class Card {
 		
 	}
 	
+	/**
+	 * Returns a string that is either hidden or shown depending on the vard's visible value
+	 * @return String - A string either showing the cards values or keeping them as ???
+	 */
 	private String getCardID()
 	{
 		String cardID;
@@ -116,56 +144,98 @@ public class Card {
 			}
 	}
 	
+	/**
+	 * Returns the rank value of the card
+	 * @return String - String of the ranks
+	 */
 	public String getRank()
 		{
 			return rank;
 		}
 
+	/**
+	 * sets the rank of a card
+	 * @param rank - the desired rank in string form
+	 */
 	public void setRank(String rank)
 		{
 			this.rank = rank;
 		}
-
+	
+	/**
+	 * returns the suit in string form
+	 * @return String - String form of the suit
+	 */
 	public String getSuit()
 		{
 			return suit;
 		}
-
+	
+	/**
+	 * sets the suit of a card
+	 * @param suit - String form of the desired suit
+	 */
 	public void setSuit(String suit)
 		{
 			this.suit = suit;
 		}
-
+	
+	/**
+	 * returns the integer value of the card
+	 * @return int - the value of the card
+	 */
 	public int getValue()
 		{
 			return value;
 		}
-
+	
+	/**
+	 * sets the value of a card
+	 * @param value - integer of the desired value
+	 */
 	public void setValue(int value)
 		{
 			this.value = value;
 		}
-
+	
+	/**
+	 * Gets the rank value of the card
+	 * @return int - the rank value of the card
+	 */
 	public int getRankValue()
 		{
 			return rankValue;
 		}
-
+	
+	/**
+	 * sets the Rank Value of the card
+	 * @param rankValue - int the desired rank value
+	 */
 	public void setRankValue(int rankValue)
 		{
 			this.rankValue = rankValue;
 		}
-
+	
+	/**
+	 * Checks if the card is visible or not
+	 * @return boolean - true if the card is visible
+	 */
 	public boolean isVisible()
 		{
 			return visible;
 		}
-
+	
+	/**
+	 * sets a card's visible value as true
+	 */
 	public void makeVisible()
 		{
 			visible = true;
 		}
 	
+	/**
+	 * sets a card's visible value as false
+	 */
 	public void makeInvisible()
 		{
 			visible = false;

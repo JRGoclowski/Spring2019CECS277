@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Somebody Set Up Us The Bomb", "Somebody Set Up Us The Bomb\Somebody Set Up Us The Bomb.vcxproj", "{2E33D542-14CF-4830-B989-7CE63278849D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Debug|x64.ActiveCfg = Debug|x64
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Debug|x64.Build.0 = Debug|x64
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Debug|x86.ActiveCfg = Debug|Win32
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Debug|x86.Build.0 = Debug|Win32
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Release|x64.ActiveCfg = Release|x64
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Release|x64.Build.0 = Release|x64
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Release|x86.ActiveCfg = Release|Win32
+		{2E33D542-14CF-4830-B989-7CE63278849D}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A13E2A2-A07F-4500-B417-C8AA5B39E77B}
+	EndGlobalSection
+EndGlobal

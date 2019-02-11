@@ -25,6 +25,9 @@ public class Board {
 		opponentPlayed = new Deck(true);
 	}
 	
+	/**
+	 * Sets the board up for a new board state
+	 */
 	public void ResetBoard()
 	{
 		opponentContest = null;
@@ -285,45 +288,80 @@ public class Board {
 			return (playerDeck.hasEnoughCards(4) && opponentDeck.hasEnoughCards(4));
 		}
 
-	
+	/**
+	 * returns the opponent Followup Card
+	 * @return Card - The opponent's followup card
+	 */
 	public Card getOpponentFollowup()
 		{
 			return opponentFollowup;
 		}
-
+	
+	/**
+	 * returns the player's Followup Card
+	 * @return Card - The player's followup card
+	 */
 	public Card getPlayerFollowup()
 		{
 			return playerFollowup;
 		}
 		
+	/**
+	 * returns how many cards have been played. 
+	 * @return int - the number of cards played onto the field
+	 */
 	public int getCardsInPlay()
 	{
 		return playerPlayed.getDeckSize() + opponentPlayed.getDeckSize();
 	}
 	
+	/**
+	 * returns the player's deck
+	 * @return deck - the player's deck
+	 */
 	public Deck getPlayerDeck()
 		{
 			return playerDeck;
 		}
 
+	/**
+	 * returns the opponent's Deck
+	 * @return deck - the opponent's deck
+	 */
 	public Deck getOpponentDeck()
 		{
 			return opponentDeck;
 		}
 
+	/**
+	 * Returns the deck that represents the player's played cards
+	 * @return deck - the cards the player has played
+	 */
 	public Deck getPlayerPlayed()
 		{
 			return playerPlayed;
 		}
 	
+	/**
+	 * returns the opponent's contest card
+	 * @return card - the opponent's card used to contest
+	 */
 	public Card getOpponentContest() {
 		return opponentContest;
 	}
-
+	
+	/**
+	 * returns the player's contest card
+	 * @return card - the opponent's card used to contest
+	 */
 	public Card getPlayerContest() {
 		return playerContest;
 	}
 
+	/**
+	 * returns the deck that represents the opponent's played cards
+	 * @return deck - the cards that the opponent has played
+	 */
 	public Deck getOpponentPlayed()
 		{
 			return opponentPlayed;

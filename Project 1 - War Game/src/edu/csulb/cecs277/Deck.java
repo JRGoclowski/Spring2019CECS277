@@ -1,3 +1,4 @@
+
 package edu.csulb.cecs277;
 
 import java.util.LinkedList;
@@ -8,6 +9,10 @@ public class Deck
 	LinkedList <Card> deck = new LinkedList <Card>();
 	private int deckSize;
 	
+	/**
+	 * Constructs a deck either of 0 cards or all 52
+	 * @param isEmpty - if set to true creates an empty deck object. 
+	 */
 	public Deck(boolean isEmpty)
 		{
 			if (!isEmpty)
@@ -106,12 +111,19 @@ public class Deck
 		CountDeckSize();
 		return (deckSize == 0);
 	}
-
+	
+	/**
+	 * Updates deckSize to the current deck size
+	 */
 	private void CountDeckSize()
 		{
 			deckSize = deck.size();
 		}
 	
+	/**
+	 * returns the deckSize 
+	 * @return deckSize - size of the deck
+	 */
 	public int getDeckSize()
 		{
 			CountDeckSize();
