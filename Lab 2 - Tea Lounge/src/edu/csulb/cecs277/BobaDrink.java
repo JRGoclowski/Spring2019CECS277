@@ -8,7 +8,8 @@ public class BobaDrink extends DrinkItem
 	//toppings boba, popping boba, grass jelly, lyche jelly, coconut jelly, and mini mochi
 	//milk can be whole, half and half, almond milk, coconut milk, or none
 	//cost determined by size and number of toppings
-	String[] options = {"Boba", "Popping Boba", "Grass Jelly", "Lyche Jelly", "Coconut Jelly"};
+	String[] options = {/*0*/"Boba",/*1*/ "Popping Boba",/*2*/ 
+			"Grass Jelly",/*3*/ "Lyche Jelly",/*4*/ "Coconut Jelly",/*5*/ "Mini Mochi"};
 	ArrayList<String> toppings = new ArrayList<String>();
 	String baseTea, baseMilk;
 	
@@ -20,7 +21,7 @@ public class BobaDrink extends DrinkItem
 	 * @param sweetness - an integer to determine the sweetness from unsweetened to full sweetened from 0 - 4
 	 * @param milk - The desired milk for the drink, in a single word string
 	 */
-	public BobaDrink(char size, String base, int sweetness, String milk)
+	public BobaDrink(char size, String base, int sweetness, String milk, int[] chosenToppings)
 	{
 		char sizeChoice = Character.toUpperCase(size);
 		switch(base)
@@ -60,9 +61,11 @@ public class BobaDrink extends DrinkItem
 			case 4: super.setSweetness("Sweetened");
 			default: super.setSweetness("Unsweetened");
 		}
-		
+		for (int i = 0; i < chosenToppings.length;i++)
+			{
+				addTopping(options[chosenToppings[i]]);
+			}
 		updateName();
-		
 	}
 	
 	/**
@@ -121,5 +124,6 @@ public class BobaDrink extends DrinkItem
 			case "Large": cost += 3.20; return cost;
 			default: cost += 2.90; return cost;
 		}
+		
 	}
 }

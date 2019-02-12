@@ -1,17 +1,31 @@
 package edu.csulb.cecs277;
 
-public abstract class DrinkItem //implements Comparable
+public abstract class DrinkItem implements Comparable
 {
 	String name, sweetness, size;
+
 	
-	public static DrinkItem max(DrinkItem check) 
+	public int compareTo(Object arg) 
 	{
-		double valueOfComparison
+		DrinkItem otherDessert = (DrinkItem) arg;
+		if (getCost() < otherDessert.getCost())
+			{
+				return -1;
+			}
+		else if (getCost() > otherDessert.getCost())
+			{
+				return 1;
+			}
+		else
+			{
+				return 0;
+			}
+		
 	}
 	
 	public String toString() 
 	{
-			return "x";
+			return getName();
 	}
 	
 	public String getName()
