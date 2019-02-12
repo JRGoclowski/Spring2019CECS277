@@ -8,9 +8,18 @@ public class BobaDrink extends DrinkItem
 	//toppings boba, popping boba, grass jelly, lyche jelly, coconut jelly, and mini mochi
 	//milk can be whole, half and half, almond milk, coconut milk, or none
 	//cost determined by size and number of toppings
+	String[] options = {"Boba", "Popping Boba", "Grass Jelly", "Lyche Jelly", "Coconut Jelly"};
 	ArrayList<String> toppings = new ArrayList<String>();
 	String baseTea, baseMilk;
 	
+	/**
+	 * Basic Drink constuctor for Tea Drinks. Generates a basic name without toppings at first. Name will need to be
+	 * updated if any toppings are added
+	 * @param size - character representing the desired size of the drink	
+	 * @param base - the base tea that will be used to make the drink in a single word string
+	 * @param sweetness - an integer to determine the sweetness from unsweetened to full sweetened from 0 - 4
+	 * @param milk - The desired milk for the drink, in a single word string
+	 */
 	public BobaDrink(char size, String base, int sweetness, String milk)
 	{
 		char sizeChoice = Character.toUpperCase(size);
@@ -38,7 +47,7 @@ public class BobaDrink extends DrinkItem
 			case "Half and Half": baseMilk = milk; break;
 			case "Almond": baseMilk = milk + " milk"; break;
 			case "Coconut": baseMilk = milk + " milk"; break;
-			case "None": baseMilk = milk; break; 
+			case "None": baseMilk = "No Milk"; break; 
 			default: baseMilk = "Water"; break;
 		}
 		
@@ -52,10 +61,65 @@ public class BobaDrink extends DrinkItem
 			default: super.setSweetness("Unsweetened");
 		}
 		
-		String name = super.getSweetness() + baseTea + " with " 
+		updateName();
+		
 	}
+	
+	/**
+	 * updates the name of drink to include any changes. 
+	 */
+	private void updateName()
+	{
+		String name = super.getSize() +  super.getSweetness() + baseTea + " with " + baseMilk + " and";
+		if (toppings.isEmpty())
+		{
+			name += " no toppings";
+		}
+		else if (toppings.size() == 1)
+		{
+			name += " " + toppings.get(0);
+		}
+		else
+		{
+			for (int i = 0; i < toppings.size() - 1 ; i ++)
+			{
+				name += (" " + toppings.get(i)) + ",";
+			}
+			name += (" and " + toppings.get(toppings.size()));
+		}
+		
+		super.setName(name);
+	}
+	
+	/**
+	 * Adds toppings to the array list of toppings
+	 * @param topping - the topping to be added to the drink
+	 * @return boolean - returns true if the topping is not already included and added. 
+	 */
+	public boolean addTopping(String topping)
+	{
+		if (!Arrays.asList(options).contains(topping)) {return false;}
+		
+		if (toppings.contains(topping))
+		{
+			return false;
+		}
+		else
+		{
+			toppings.add(topping);
+			return true;
+		}
+	}
+	
 	public double getCost()
 	{
-		return 5.00;
+		double cost = (0.80 * toppings.size());
+		switch (super.getSize())
+		{
+			case "Small": cost += 2.50; return cost;
+			case "Medium": cost += 2.90; return cost;
+			case "Large": cost += 3.20; return cost;
+			default: cost += 2.90; return cost;
+		}
 	}
 }
