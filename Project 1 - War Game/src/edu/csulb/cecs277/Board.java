@@ -185,7 +185,11 @@ public class Board {
 		if (isPlayerCard)
 			{
 				playerFollowup = Followup;
-				if ((playerContest.getRankValue() + Followup.getRankValue())< opponentContest.getRankValue()) //TODO find out how face cards are used in this calculation
+				if((playerContest.getRankValue() + Followup.getRankValue()) == opponentContest.getRankValue())
+					{
+						return WarRound();
+					}
+				else if ((playerContest.getRankValue() + Followup.getRankValue())< opponentContest.getRankValue()) //TODO find out how face cards are used in this calculation
 					{
 						return true;
 					}
@@ -197,7 +201,11 @@ public class Board {
 		else
 			{
 				opponentFollowup = Followup;
-				if ((opponentContest.getRankValue() + Followup.getRankValue())< playerContest.getRankValue()) //TODO find out how face cards are used in this calculation
+				if((opponentContest.getRankValue() + Followup.getRankValue())< playerContest.getRankValue())
+					{
+						return WarRound();
+					}
+				else if ((opponentContest.getRankValue() + Followup.getRankValue())< playerContest.getRankValue()) //TODO find out how face cards are used in this calculation
 					{
 						return true;
 					}

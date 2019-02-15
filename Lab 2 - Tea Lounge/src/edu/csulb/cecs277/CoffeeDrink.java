@@ -6,6 +6,12 @@ public class CoffeeDrink extends DrinkItem
 	
 	String baseChoice;
 	
+	/**
+	 * Constructor for the coffee
+	 * @param size - Single character representing one of the three sizes
+	 * @param base - The string form of the base for the coffee
+	 * @param sweetener - the number of teaspoons to be added to the drink
+	 */
 	public CoffeeDrink(char size, String base, int sweetener)
 	{
 		char sizeChoice = Character.toUpperCase(size);
@@ -30,16 +36,27 @@ public class CoffeeDrink extends DrinkItem
 		super.setName(drinkName);
 	}
 	
+	/**
+	 * Sets the sweetness of the drink using the superclass method
+	 * @param numberOfTsp - the number of teaspoons added to the drink to sweeten it
+	 */
 	public void setSweetness(int numberOfTsp)
 	{
 		super.setSweetness(Integer.toString(numberOfTsp) + " sugars");
 	}
 	
+	/**
+	 * Sets the base milk type
+	 * @param milkType - String format of the base milk or water
+	 */
 	public void setBase(String milkType)
 	{
 		baseChoice = milkType;
 	}
 	
+	/**
+	 * Returns the calculated cost of the drink
+	 */
 	public double getCost() 
 	{
 		switch(super.getSize())

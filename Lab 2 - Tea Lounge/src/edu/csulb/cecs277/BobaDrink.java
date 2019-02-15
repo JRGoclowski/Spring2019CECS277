@@ -73,7 +73,7 @@ public class BobaDrink extends DrinkItem
 	 */
 	private void updateName()
 	{
-		String name = super.getSize() +  super.getSweetness() + baseTea + " with " + baseMilk + " and";
+		String name = super.getSize() + " " + super.getSweetness() + " " + baseTea + " with " + baseMilk + " and";
 		if (toppings.isEmpty())
 		{
 			name += " no toppings";
@@ -84,11 +84,11 @@ public class BobaDrink extends DrinkItem
 		}
 		else
 		{
-			for (int i = 0; i < toppings.size() - 1 ; i ++)
+			for (int i = 0; i < toppings.size() - 2 ; i ++)
 			{
 				name += (" " + toppings.get(i)) + ",";
 			}
-			name += (" and " + toppings.get(toppings.size()));
+			name += (" and " + toppings.get(toppings.size() - 1));
 		}
 		
 		super.setName(name);
@@ -114,6 +114,10 @@ public class BobaDrink extends DrinkItem
 		}
 	}
 	
+	/**
+	 * Returns the total cost of the drink
+	 * 
+	 */
 	public double getCost()
 	{
 		double cost = (0.80 * toppings.size());
