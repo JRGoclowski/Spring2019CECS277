@@ -9,15 +9,56 @@ public class Receipt
 	static ArrayList<DessertItem> Desserts = new ArrayList<DessertItem>();
 	DecimalFormat df = new DecimalFormat("#.00");
 	
-	//@SuppressWarnings("unchecked")//TODO check if this is necessary
-	public void Sort()
+	private ArrayList<String> GenerateItemizedReceipt()
+	{
+		Sort();
+		ArrayList<String> receipt = new ArrayList<String> (); 
+		ArrayList<String> addedItems = new ArrayList<String>();
+		for (int i = 0 ; i < Drinks.size(); i++)
+			{
+				if (addedItems.contains(Drinks.get(i)))
+					{
+						continue;
+					}
+				else
+					{
+						receipt.add(GenerateLine(Drinks.get(i)));
+						addedItems.add(Drinks.get(i).toString());
+					}
+			}
+		for (int i = 0 ; i < Desserts.size(); i++)
+			{
+				if (addedItems.contains(Desserts.get(i)))
+					{
+						continue;
+					}
+				else
+					{
+						receipt.add(GenerateLine(Desserts.get(i)));
+						addedItems.add(Desserts.get(i).toString());
+					}
+			}
+		return receipt;
+	}
+	
+	public double GenerateSubtotal()
+	
+	/**
+	 * Sorts the items on the receipt to be organized by class
+	 */
+ 	private void Sort()
 	{
 		Collections.sort(Drinks);
 		Collections.sort(Desserts);
 		
 	}
 	
-	public int GetNumberOf(DrinkItem item)
+	/**
+	 * counts how many of a given drink item are on the order
+	 * @param item - the item to be counted
+	 * @return int - how many of that item are in the order
+	 */
+	private int GetNumberOf(DrinkItem item)
 	{
 		Sort();
 		int count = 0;
@@ -35,7 +76,12 @@ public class Receipt
 		return count;
 	}
 	
-	public int GetNumberOf(DessertItem item)
+	/**
+	 * counts how many of a given dessert item are on the order
+	 * @param item - the item to be counted
+	 * @return int - how many of that item are in the order
+	 */
+	private int GetNumberOf(DessertItem item)
 	{
 		Sort();
 		int count = 0;
@@ -53,6 +99,12 @@ public class Receipt
 		return count;
 	}
 	
+	/**
+	 * Generates a string to be printed on the receipt with the count of the drink,
+	 * the name of the drink, how much it is per drink, and the total.
+	 * @param item - the item to have printed
+	 * @return String - A string in the format of count of items, name, cost per, and total
+	 */
 	private String GenerateLine(DrinkItem item)
 	{
 		int countOfItem = GetNumberOf(item);
@@ -62,30 +114,80 @@ public class Receipt
 		return lineOrder;
 	}
 	
+	/**
+	 * Generates a string to be printed on the receipt with the count of the dessert,
+	 * the name of the dessert, how much it is per dessert (accounting for bundle deals), and the total.
+	 * @param item - the item to have printed
+	 * @return String - A string in the format of count of items, name, cost per, and total
+	 */
 	private String GenerateLine(DessertItem item)
 	{
 		int countOfItem = GetNumberOf(item);
-		double totalCost;
-		String formattedDessert;
+		String formattedDessert = "";
 		if (item instanceof Macaroon)
 			{
 				if (countOfItem >= 3)
 					{
 						int trioBundles = countOfItem / 3;
 						int unitAmount = countOfItem % 3;
+						double trioCost = trioBundles * ((Macaroon) item).getTrioCost();
+						double unitCost = unitAmount * ((Macaroon) item).getCost();
 						if (unitAmount > 0)
 							{
-								formattedDessert = trioBundles + " - " item.getName() ;
+								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
+										df.format(((Macaroon) item).getTrioCost()) + " for 3 : " + 
+										df.format(trioCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
+										+ df.format(((Macaroon) item).getCost()) + " each : " + unitCost + "\n" +
+										 "\t Total for " + countOfItem + " " + item.getName() + "s : " + 
+										df.format((unitCost + trioCost));
+							}
+						else
+							{
+								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
+										df.format(((Macaroon) item).getTrioCost()) + " for 3 : " + 
+										df.format(trioCost);
 							}
 					}
 			}
+		else if (item instanceof Cookie)
+			{
+				if (countOfItem >= 12)
+					{
+						int dozens = countOfItem / 12;
+						int unitAmount = countOfItem % 12;
+						double dozenCost = dozens * ((Cookie) item).getDozenCost();
+						double unitCost = unitAmount * ((Cookie) item).getCost();
+						if (unitAmount > 0)
+							{
+								formattedDessert = dozens + " - " + item.getName() +  " @ " +
+										df.format(((Cookie) item).getDozenCost()) + " for 12 : " + 
+										df.format(dozenCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
+										+ df.format(((Cookie) item).getCost()) + " each : " + unitCost + "\n" +
+										 "\t Total for " + countOfItem + " " + item.getName() + "s : " + 
+										df.format((unitCost + dozenCost));
+							}
+						else
+							{
+								formattedDessert = dozens + " - " + item.getName() +  " @ " +
+										df.format(((Cookie) item).getDozenCost()) + " for 12 : " + 
+										df.format(dozenCost);
+							}
+					}
+			}
+		else
+			{
+				double totalCost = countOfItem * item.getCost();
+				formattedDessert = countOfItem + " - " + item.getName() + " @ " 
+						+ df.format(item.getCost()) + " each : " + df.format(totalCost);
+			}
 		
-		String lineOrder = countOfItem + " - " + item.getName() + " @ " 
-				+ df.format(item.getCost()) + " each : " + df.format(totalCost);
-		return lineOrder;
+		return formattedDessert;
 	}
 
-	
+	/**
+	 * Adds a drink to the drink arrayList
+	 * @param addition - the drink to be added
+	 */
 	public void AddDrink(DrinkItem addition)
 	{
 		Drinks.add(addition);
@@ -93,11 +195,19 @@ public class Receipt
 		if (addition instanceof BobaDrink);
 	}
 	
+	/**
+	 * Adds a dessert to the dessert arrayList
+	 * @param addition - the dessert to be added
+	 */
 	public void AddDessert(DessertItem addition)
 	{
 		Desserts.add(addition);
 	}
 	
+	/**
+	 * Checks all Desserts on the receipt and finds the most expensive
+	 * @return DessertItem - the most expensive single item on the order
+	 */
 	public static DessertItem MaxDessert()
 	{
 		int numberOfDesserts = Desserts.size();
@@ -113,6 +223,10 @@ public class Receipt
 		return currentMax;
 	}
 	
+	/**
+	 * Checks all Drinks on the receipt and finds the most expensive
+	 * @return DrinkItem - the most expensive single item on the order
+	 */
 	public static DrinkItem MaxDrink()
 	{
 		int numberOfDrinks = Drinks.size();
