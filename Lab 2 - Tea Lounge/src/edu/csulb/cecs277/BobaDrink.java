@@ -21,7 +21,7 @@ public class BobaDrink extends DrinkItem
 	 * @param sweetness - an integer to determine the sweetness from unsweetened to full sweetened from 0 - 4
 	 * @param milk - The desired milk for the drink, in a single word string
 	 */
-	public BobaDrink(char size, String base, int sweetness, String milk, int[] chosenToppings)
+	public BobaDrink(char size, String base, int sweetness, String milk, ArrayList<Integer> chosenToppings)
 	{
 		char sizeChoice = Character.toUpperCase(size);
 		switch(base)
@@ -61,13 +61,17 @@ public class BobaDrink extends DrinkItem
 			case 4: super.setSweetness("Sweetened");
 			default: super.setSweetness("Unsweetened");
 		}
-		for (int i = 0; i < chosenToppings.length;i++)
+		for (int i = 0; i < chosenToppings.size();i++)
 			{
-				addTopping(options[chosenToppings[i]]);
+				addTopping(options[chosenToppings.get(i)]);
 			}
 		updateName();
 	}
 	
+	public String[] getOptions() {
+		return options;
+	}
+
 	/**
 	 * updates the name of drink to include any changes. 
 	 */
@@ -84,7 +88,7 @@ public class BobaDrink extends DrinkItem
 		}
 		else
 		{
-			for (int i = 0; i < toppings.size() - 2 ; i ++)
+			for (int i = 0; i < toppings.size() - 1 ; i ++)
 			{
 				name += (" " + toppings.get(i)) + ",";
 			}

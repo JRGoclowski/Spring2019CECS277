@@ -1,5 +1,6 @@
 package edu.csulb.cecs277;
 
+import java.lang.Math;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -7,16 +8,40 @@ public class Receipt
 {
 	static ArrayList<DrinkItem> Drinks = new ArrayList<DrinkItem>();
 	static ArrayList<DessertItem> Desserts = new ArrayList<DessertItem>();
+	static int numberOfItems;
 	DecimalFormat df = new DecimalFormat("#.00");
 	
-	private ArrayList<String> GenerateItemizedReceipt()
+	public void PrintReceipt()
+	{
+		if (numberOfItems == 0)
+		{
+			System.out.println("The order is empty!\nAdd items to the order first!");
+		}
+		else
+		{
+			ArrayList<String> itemAssortment = GenerateReceipt();
+			System.out.println();
+			for (int i = 0; i < itemAssortment.size(); i++)
+			{
+				System.out.println(itemAssortment.get(i));
+			}
+			double subTotal = getSubtotal();
+			System.out.println("Subtotal : " + df.format(subTotal));
+			double grandTotal = getGrandTotal();
+			System.out.println("Grand Total : " + grandTotal);
+		}
+		
+	}
+	
+	private ArrayList<String> GenerateReceipt() 
 	{
 		Sort();
 		ArrayList<String> receipt = new ArrayList<String> (); 
 		ArrayList<String> addedItems = new ArrayList<String>();
 		for (int i = 0 ; i < Drinks.size(); i++)
 			{
-				if (addedItems.contains(Drinks.get(i)))
+				if (addedItems.contains(Drinks.get(i).toString()))
+					
 					{
 						continue;
 					}
@@ -28,7 +53,7 @@ public class Receipt
 			}
 		for (int i = 0 ; i < Desserts.size(); i++)
 			{
-				if (addedItems.contains(Desserts.get(i)))
+				if (addedItems.contains(Desserts.get(i).toString()))
 					{
 						continue;
 					}
@@ -41,7 +66,30 @@ public class Receipt
 		return receipt;
 	}
 	
-	public double GenerateSubtotal()
+	public double getSubtotal()
+	{
+		double subtotal = 0;
+		ArrayList<String> receipt = GenerateReceipt();
+		for (int i = 0; i < receipt.size(); i++)
+		{
+			String[] moneySplit = receipt.get(i).split("\\$");
+			String amountString = (moneySplit[moneySplit.length-1]);
+			Double amount = Double.parseDouble(amountString);
+			//amount = Double.parseDouble(df.format(amount));
+			subtotal = subtotal + amount;
+		}
+		return subtotal;
+	}
+	
+	
+	private double getGrandTotal()
+	{
+		double subTotal = getSubtotal();
+		double grandTotal = subTotal + (subTotal*0.0775);
+		grandTotal = Math.round(grandTotal* 100.0 )/100.0;
+		return grandTotal;
+	}
+	
 	
 	/**
 	 * Sorts the items on the receipt to be organized by class
@@ -53,7 +101,8 @@ public class Receipt
 		
 	}
 	
-	/**
+	
+ 	/**
 	 * counts how many of a given drink item are on the order
 	 * @param item - the item to be counted
 	 * @return int - how many of that item are in the order
@@ -75,6 +124,7 @@ public class Receipt
 			}
 		return count;
 	}
+	
 	
 	/**
 	 * counts how many of a given dessert item are on the order
@@ -99,6 +149,7 @@ public class Receipt
 		return count;
 	}
 	
+	
 	/**
 	 * Generates a string to be printed on the receipt with the count of the drink,
 	 * the name of the drink, how much it is per drink, and the total.
@@ -110,9 +161,10 @@ public class Receipt
 		int countOfItem = GetNumberOf(item);
 		double totalCost = countOfItem * item.getCost();
 		String lineOrder = countOfItem + " - " + item.getName() + " @ " 
-				+ df.format(item.getCost()) + " each : " + df.format(totalCost);
+				+ df.format(item.getCost()) + " each : $" + df.format(totalCost);
 		return lineOrder;
 	}
+	
 	
 	/**
 	 * Generates a string to be printed on the receipt with the count of the dessert,
@@ -135,18 +187,25 @@ public class Receipt
 						if (unitAmount > 0)
 							{
 								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
-										df.format(((Macaroon) item).getTrioCost()) + " for 3 : " + 
+										df.format(((Macaroon) item).getTrioCost()) + " for 3 : $" + 
 										df.format(trioCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
-										+ df.format(((Macaroon) item).getCost()) + " each : " + unitCost + "\n" +
-										 "\t Total for " + countOfItem + " " + item.getName() + "s : " + 
+										+ df.format(((Macaroon) item).getCost()) + " each : $" + df.format(unitCost) + "\n" +
+										 "\t Total for " + countOfItem + " " + item.getName() + "s : $" + 
 										df.format((unitCost + trioCost));
 							}
 						else
 							{
 								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
-										df.format(((Macaroon) item).getTrioCost()) + " for 3 : " + 
+										df.format(((Macaroon) item).getTrioCost()) + " for 3 : $" + 
 										df.format(trioCost);
 							}
+					}
+				else
+					{
+						double unitCost = countOfItem * ((Macaroon) item).getCost();	
+						formattedDessert = countOfItem + " - " + item.getName() +  " @ " +
+								df.format(((Macaroon) item).getCost()) + " for each : $" + 
+								df.format(unitCost);
 					}
 			}
 		else if (item instanceof Cookie)
@@ -160,30 +219,37 @@ public class Receipt
 						if (unitAmount > 0)
 							{
 								formattedDessert = dozens + " - " + item.getName() +  " @ " +
-										df.format(((Cookie) item).getDozenCost()) + " for 12 : " + 
+										df.format(((Cookie) item).getDozenCost()) + " for 12 : $" + 
 										df.format(dozenCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
-										+ df.format(((Cookie) item).getCost()) + " each : " + unitCost + "\n" +
-										 "\t Total for " + countOfItem + " " + item.getName() + "s : " + 
+										+ df.format(((Cookie) item).getCost()) + " each : $" + df.format(unitCost) + "\n" +
+										 "\t Total for " + countOfItem + " " + item.getName() + "s : $" + 
 										df.format((unitCost + dozenCost));
 							}
 						else
 							{
 								formattedDessert = dozens + " - " + item.getName() +  " @ " +
-										df.format(((Cookie) item).getDozenCost()) + " for 12 : " + 
+										df.format(((Cookie) item).getDozenCost()) + " for 12 : $" + 
 										df.format(dozenCost);
 							}
 					}
+				else
+				{
+					double totalCost = countOfItem * item.getCost();
+					formattedDessert = countOfItem + " - " + item.getName() + " @ " 
+							+ df.format(item.getCost()) + " each : $" + df.format(totalCost);
+				}
 			}
 		else
 			{
 				double totalCost = countOfItem * item.getCost();
 				formattedDessert = countOfItem + " - " + item.getName() + " @ " 
-						+ df.format(item.getCost()) + " each : " + df.format(totalCost);
+						+ df.format(item.getCost()) + " each : $" + df.format(totalCost);
 			}
 		
 		return formattedDessert;
 	}
 
+	
 	/**
 	 * Adds a drink to the drink arrayList
 	 * @param addition - the drink to be added
@@ -191,9 +257,10 @@ public class Receipt
 	public void AddDrink(DrinkItem addition)
 	{
 		Drinks.add(addition);
-		
-		if (addition instanceof BobaDrink);
+		numberOfItems++;
+		if (addition instanceof BobaDrink);//TODO figure out what's going on here
 	}
+	
 	
 	/**
 	 * Adds a dessert to the dessert arrayList
@@ -202,7 +269,14 @@ public class Receipt
 	public void AddDessert(DessertItem addition)
 	{
 		Desserts.add(addition);
+		numberOfItems++;
 	}
+	
+	
+	public int getNumberOfItems() {
+		return numberOfItems;
+	}
+
 	
 	/**
 	 * Checks all Desserts on the receipt and finds the most expensive
@@ -222,6 +296,7 @@ public class Receipt
 			}
 		return currentMax;
 	}
+	
 	
 	/**
 	 * Checks all Drinks on the receipt and finds the most expensive
