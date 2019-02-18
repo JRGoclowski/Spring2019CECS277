@@ -14,37 +14,63 @@ public class CashRegister
 	
 	public void showOptions()
 	{
-		System.out.println("What would you like to do?\n"
-				+ "\n1 - Start a new order"
-				+ "\n2 - Show previous receipts"
-				+ "\n3 - Clear all previous orders"
-				+ "\n4 - Close out register"
-				+ "\nEnter choice : ");
-		int choice = io.intIn(1,4); 
-		switch (choice)
+		boolean continueRunning = true;
+		while (continueRunning)
 		{
-		
+			System.out.print("What would you like to do?\n"
+					+ "\n1 - Start a new order"
+					+ "\n2 - Show previous receipts"
+					+ "\n3 - Clear all previous orders"
+					+ "\n4 - Close out register"
+					+ "\nEnter choice : ");
+			int choice = io.intIn(1,4); 
+			System.out.println();
+			switch (choice)
+			{
+				case 1: System.out.println("Begining new order"); System.out.println(); newOrder(); break;
+				case 2: break;
+				case 3: orders.clear(); System.out.println("All previous orders cleared!");break;
+				case 4: continueRunning = false; break;
+			}
 		}
+		
 		
 	}
 	
 	private Receipt newOrder() 
 	{
 		Receipt currentOrder = new Receipt();
-		System.out.println("What would you like to do?\n"
-				+ "\n1 - Print the current order receipt"
-				+ "\n2 - Add a drink to the order"
-				+ "\n3 - Add a dessert to the order"
-				+ "\n4 - Clear the current order"
-				+ "\n5 - Add any coupons and finalize the order"
-				+ "\nEnter choice : ");
-		int choice = io.intIn(1,5); 
-		switch (choice)
+		boolean orderComplete = false;
+		while (!orderComplete)
 		{
-			case 1: currentOrder.PrintReceipt(); break;
-			case 2: currentOrder.AddDrink(CreateDrink()); break;
-			case 3: addDesserts(currentOrder); break;
+			System.out.print("What would you like to do?\n"
+					+ "\n1 - Print the current order receipt"
+					+ "\n2 - Add a drink to the order"
+					+ "\n3 - Add a dessert to the order"
+					+ "\n4 - Clear the current order"
+					+ "\n5 - Add any coupons and finalize the order"
+					+ "\nEnter choice : ");
+			int choice = io.intIn(1,5); 
+			System.out.println();
+			switch (choice)
+			{
+				case 1: currentOrder.PrintReceipt(); break;
+				case 2: currentOrder.AddDrink(CreateDrink()); break;
+				case 3: addDesserts(currentOrder); break;
+				case 4: currentOrder = new Receipt(); 
+					System.out.println("Order Cleared! New order begun"); break;
+				case 5: FinalizeOrder(currentOrder); orderComplete = true; break;
+				
+			}
 		}
+		
+		return currentOrder;
+		
+	}
+	
+	private void FinalizeOrder(Receipt currentOrder)
+	{
+		
 	}
 	
 	private void addDesserts(Receipt order)
@@ -55,6 +81,7 @@ public class CashRegister
 				+ "\n3 - Macaroons"
 				+ "\nEnter choice : ");
 		int dessertType = io.intIn(1, 3);
+		System.out.println();
 		switch (dessertType)
 		{
 			case 1: AddPastries(order); break;
@@ -67,10 +94,10 @@ public class CashRegister
 	private void AddPastries(Receipt order)
 	{
 		System.out.print("Would you like to add: \n"
-				+ "\n1 - Cinnamon Roll"
-				+ "\n2 - Croissant"
-				+ "\n3 - Bagel"
-				+ "\n4 - Muffin"
+				+ "\n1 - Cinnamon Roll - $ 3.00"
+				+ "\n2 - Croissant - $2.70"
+				+ "\n3 - Bagel - $2.90"
+				+ "\n4 - Muffin - $3.10"
 				+ "\nEnter choice : ");
 		int dessertType= io.intIn(1, 4)-1;
 		System.out.print("Would you like it heated? [Y]es/[N]o : ");
@@ -96,21 +123,19 @@ public class CashRegister
 	private void AddCookies(Receipt order) //TODO Add Prices
 	{
 		System.out.print("Would you like to add: \n"
-				+ "\n1 - Chocolate Chip Cookies"
-				+ "\n2 - Oatmeal Cookies"
-				+ "\n3 - Peanut Butter Cookies"
+				+ "\n1 - Chocolate Chip Cookies - $0.50 each\n\t\t- $5.00 per dozen"
+				+ "\n2 - Oatmeal Cookies - $0.75 each\n\t\t- $7.50 per dozen"
+				+ "\n3 - Peanut Butter Cookies - $0.80 each\n\t\t- $8.00 per dozen"
 				+ "\nEnter choice : ");
 		int dessertType= io.intIn(1, 3)-1;
-		System.out.print("Would you like it heated? [Y]es/[N]o : ");
-		boolean heatedChoice = io.YesOrNo();
-		Pastry desiredDessert = new Pastry(dessertType, heatedChoice);
+		Cookie desiredDessert = new Cookie(dessertType);
 		int numberDesired = 0;
 		boolean correctCount = false;
 		while (!correctCount)
 		{
 			System.out.print("How many would you like to add : ");
 			numberDesired = io.intIn();
-			System.out.println("You would like to add " + numberDesired + " " + desiredDessert.getName() +"(s)." 
+			System.out.print("You would like to add " + numberDesired + " " + desiredDessert.getName() +"(s)." 
 					+ "\nIs this correct? [Y]es/[N]o : ");
 			correctCount = io.YesOrNo();
 		}
@@ -121,7 +146,32 @@ public class CashRegister
 		System.out.println("Added " + numberDesired + " " + desiredDessert.getName() +"(s).");
 	}
 	
-	private void AddMacaroons(Receipt order);
+	private void AddMacaroons(Receipt order)
+	{
+		System.out.print("Would you like to add: \n"
+				+ "\n1 - Green Tea Macaroon - $1.00 each\n\t\t- $2.50 for 3"
+				+ "\n2 - Chocolate Macaroon - $1.25 each\n\t\t- $3.00 for 3"
+				+ "\n3 - Mango Macaroon - $1.50 each\n\t\t- $4.00 for 3"
+				+ "\n4 - Strawberry Macaroon - $1.50 each\n\t\t- $4.00 for 3"
+				+ "\nEnter choice : ");
+		int dessertType= io.intIn(1, 4)-1;
+		Macaroon desiredDessert = new Macaroon(dessertType);
+		int numberDesired = 0;
+		boolean correctCount = false;
+		while (!correctCount)
+		{
+			System.out.print("How many would you like to add : ");
+			numberDesired = io.intIn();
+			System.out.print("You would like to add " + numberDesired + " " + desiredDessert.getName() +"(s)." 
+					+ "\nIs this correct? [Y]es/[N]o : ");
+			correctCount = io.YesOrNo();
+		}
+		for (int i = 0; i < numberDesired; i++)
+		{
+			order.AddDessert(desiredDessert);
+		}
+		System.out.println("Added " + numberDesired + " " + desiredDessert.getName() +"(s).");
+	}
 	
 	private DrinkItem CreateDrink()
 	{
@@ -131,6 +181,7 @@ public class CashRegister
 				+ "\n2 - Boba Drink "
 				+ "\nEnter choice : ");
 		int drinkType = io.intIn(1, 2);
+		System.out.println();
 		switch (drinkType)
 		{
 			case 1: drinkConstructed = CreateCoffee(); break;
@@ -152,6 +203,7 @@ public class CashRegister
 				+ "\n3 - Large "
 				+ "\nEnter choice : ");
 		choice = io.intIn(1,3);
+		System.out.println();
 		switch (choice)
 		{
 			case 1: size = 'S'; break;
@@ -165,6 +217,7 @@ public class CashRegister
 				+ "\n3 - Almond Milk"
 				+ "\nEnter choice : ");
 		choice = io.intIn(1,3);
+		System.out.println();
 		switch (choice)
 		{
 			case 1: base = "Whole"; break;
@@ -193,6 +246,7 @@ public class CashRegister
 				+ "\n3 - Large "
 				+ "\nEnter choice : ");
 		choice = io.intIn(1,3);
+		System.out.println();
 		switch (choice)
 		{
 			case 1: size = 'S'; break;
@@ -209,6 +263,7 @@ public class CashRegister
 				+ "\n5 - Oolong Tea"
 				+ "\nEnter choice : ");
 		choice = io.intIn(1,5);
+		System.out.println();
 		switch (choice)
 		{
 			case 1: base = "Green"; break;
@@ -227,6 +282,7 @@ public class CashRegister
 				+ "\n5 - No Milk"
 				+ "\nEnter choice : ");
 		choice = io.intIn(1,5);
+		System.out.println();
 		switch (choice)
 		{
 			case 1: milk = "Whole"; break;
@@ -246,17 +302,18 @@ public class CashRegister
 				+ "\nEnter choice : ");
 		sweetness = io.intIn(1,5) - 1;
 		
-		System.out.println("Which toppings are desired?\n"
+		System.out.print("Which toppings are desired?\n"
 				+ "\n1 - Boba"
 				+ "\n2 - Popping Boba"
 				+ "\n3 - Grass Jelly"
 				+ "\n4 - Lyche Jelly"
 				+ "\n5 - Coconut Jelly"
 				+ "\n6 - Mini Mochi"
-				+ "You may add as many as desired. Enter 0 when no more toppings are desired"
+				+ "\n \nYou may add as many as desired. "
+				+ "\nEnter 0 when no more toppings are desired"
 				+ "\nEnter choice : ");
-		choice = io.intIn(0,6);
-		while (choice != 0)
+		choice = io.intIn(0,6)-1;
+		while (choice != -1)
 		{
 			if (toppings.contains(choice))
 			{
@@ -267,16 +324,16 @@ public class CashRegister
 				toppings.add(choice);
 				System.out.println("You have added " + options[choice]);
 			}
-			System.out.println("Which toppings are desired?\n"
+			System.out.print("Which toppings are desired?\n"
 					+ "\n1 - Boba"
 					+ "\n2 - Popping Boba"
 					+ "\n3 - Grass Jelly"
 					+ "\n4 - Lyche Jelly"
 					+ "\n5 - Coconut Jelly"
 					+ "\n6 - Mini Mochi"
-					+ "You may add as many as desired. Enter 0 when no more toppings are desired"
+					+ "\n\nYou may add as many as desired. \nEnter 0 when no more toppings are desired"
 					+ "\nEnter choice : ");
-			choice = io.intIn(1,6);
+			choice = io.intIn(0,6)-1;
 		}
 		
 		return new BobaDrink(size, base, sweetness, milk, toppings);

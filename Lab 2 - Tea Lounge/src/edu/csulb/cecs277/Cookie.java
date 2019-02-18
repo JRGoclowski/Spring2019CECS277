@@ -19,7 +19,7 @@ public class Cookie extends DessertItem
 			case 1: super.setName("Oatmeal Cookie"); 
 				unitCost = 0.75; dozenCost = 7.50; break;
 			case 2: super.setName("Peanut Butter Cookie"); 
-				unitCost = 0.80; dozenCost = 8.50; break;
+				unitCost = 0.80; dozenCost = 8.00; break;
  		}
 	}
 	

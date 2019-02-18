@@ -11,6 +11,7 @@ public class Receipt
 	static int numberOfItems;
 	DecimalFormat df = new DecimalFormat("#.00");
 	
+	
 	public void PrintReceipt()
 	{
 		if (numberOfItems == 0)
@@ -32,6 +33,7 @@ public class Receipt
 		}
 		
 	}
+	
 	
 	private ArrayList<String> GenerateReceipt() 
 	{
@@ -66,6 +68,7 @@ public class Receipt
 		return receipt;
 	}
 	
+	
 	public double getSubtotal()
 	{
 		double subtotal = 0;
@@ -80,6 +83,7 @@ public class Receipt
 		}
 		return subtotal;
 	}
+	
 	
 	
 	private double getGrandTotal()
@@ -271,6 +275,7 @@ public class Receipt
 		Desserts.add(addition);
 		numberOfItems++;
 	}
+	
 	
 	
 	public int getNumberOfItems() {

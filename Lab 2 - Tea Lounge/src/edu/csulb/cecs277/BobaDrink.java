@@ -36,10 +36,10 @@ public class BobaDrink extends DrinkItem
 		
 		switch (sizeChoice) 
 		{
-			case 'S': super.setSize("Small");break;
-			case 'M': super.setSize("Medium");break;
-			case 'L': super.setSize("Large");break;
-			default: super.setSize("Medium");break;
+			case 'S': super.setSize("Small"); break;
+			case 'M': super.setSize("Medium"); break;
+			case 'L': super.setSize("Large"); break;
+			default: super.setSize("Medium"); break;
 		}
 		
 		switch (milk)
@@ -54,12 +54,12 @@ public class BobaDrink extends DrinkItem
 		
 		switch (sweetness)
 		{
-			case 0: super.setSweetness("Unsweetened");
-			case 1: super.setSweetness("1/4 sweetened");
-			case 2: super.setSweetness("1/2 sweetened");
-			case 3: super.setSweetness("3/4 sweetened");
-			case 4: super.setSweetness("Sweetened");
-			default: super.setSweetness("Unsweetened");
+			case 0: super.setSweetness("Unsweetened"); break;
+			case 1: super.setSweetness("1/4 sweetened"); break;
+			case 2: super.setSweetness("1/2 sweetened"); break;
+			case 3: super.setSweetness("3/4 sweetened"); break;
+			case 4: super.setSweetness("Sweetened"); break;
+			default: super.setSweetness("Unsweetened"); break;
 		}
 		for (int i = 0; i < chosenToppings.size();i++)
 			{
