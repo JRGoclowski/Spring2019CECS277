@@ -44,10 +44,10 @@ public class BobaDrink extends DrinkItem
 		
 		switch (milk)
 		{
-			case "Whole": baseMilk = milk + " milk"; break;
+			case "Whole": baseMilk = milk + " Milk"; break;
 			case "Half and Half": baseMilk = milk; break;
-			case "Almond": baseMilk = milk + " milk"; break;
-			case "Coconut": baseMilk = milk + " milk"; break;
+			case "Almond": baseMilk = milk + " Milk"; break;
+			case "Coconut": baseMilk = milk + " Milk"; break;
 			case "None": baseMilk = "No Milk"; break; 
 			default: baseMilk = "Water"; break;
 		}

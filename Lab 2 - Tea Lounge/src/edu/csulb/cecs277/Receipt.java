@@ -6,14 +6,15 @@ import java.util.*;
 
 public class Receipt
 {
-	static ArrayList<DrinkItem> Drinks = new ArrayList<DrinkItem>();
-	static ArrayList<DessertItem> Desserts = new ArrayList<DessertItem>();
-	static int numberOfItems;
+	ArrayList<DrinkItem> Drinks = new ArrayList<DrinkItem>();
+	ArrayList<DessertItem> Desserts = new ArrayList<DessertItem>();
+	int numberOfItems;
 	DecimalFormat df = new DecimalFormat("#.00");
-	
+	double subTotal, grandTotal, amountPaid = 0, changeDue;
 	
 	public void PrintReceipt()
 	{
+		
 		if (numberOfItems == 0)
 		{
 			System.out.println("The order is empty!\nAdd items to the order first!");
@@ -26,11 +27,108 @@ public class Receipt
 			{
 				System.out.println(itemAssortment.get(i));
 			}
-			double subTotal = getSubtotal();
-			System.out.println("Subtotal : " + df.format(subTotal));
-			double grandTotal = getGrandTotal();
-			System.out.println("Grand Total : " + grandTotal);
+			setGrandTotal();
+			System.out.println("Subtotal : $" + df.format(subTotal) + " for " + getNumberOfItems() + " item(s)");
+			System.out.println("Grand Total : $" + df.format(grandTotal));
+			if (amountPaid != 0)
+			{
+				System.out.println("Amount Paid : $" + df.format(amountPaid));
+				System.out.println("Change Due : $" + df.format(changeDue));
+			}
+			
+			System.out.println();
 		}
+		
+	}
+	
+	
+	private void setSubTotal() 
+	{
+		subTotal = 0;
+		ArrayList<String> receipt = GenerateReceipt();
+		for (int i = 0; i < receipt.size(); i++)
+		{
+			String[] moneySplit = receipt.get(i).split("\\$");
+			String amountString = (moneySplit[moneySplit.length-1]);
+			Double amount = Double.parseDouble(amountString);
+			//amount = Double.parseDouble(df.format(amount));
+			subTotal = subTotal + amount;
+		}
+	}
+	
+	
+	private void setGrandTotal() {
+		setSubTotal();
+		double grandTotalTemp = subTotal + (subTotal*0.0775);
+		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
+	}
+	
+	
+	public void FinalizeOrder(IOshortcut io)
+	{
+		
+		if (numberOfItems == 0)
+		{
+			System.out.println("There is nothing on this order, the order is now closed");
+			return;
+		}
+		System.out.print("Is there a coupon to apply? [Y]es/[N]o : ");
+		boolean hasCoupon = io.YesOrNo();
+		PrintReceipt();
+		System.out.println();
+		if (hasCoupon)
+		{
+			ArrayList<Coupon> coupons = new ArrayList<Coupon>();
+			System.out.print("Is there more than one coupon? [Y]es/[N]o");
+			boolean multipleCoupons = io.YesOrNo();
+			if (multipleCoupons)
+			{
+				System.out.print("Enter number of coupons :");
+				int couponCount = io.intIn();
+				for (int i = 0; i < couponCount; i++)
+				{
+					System.out.print("Enter coupon type : ");
+					String couponType = io.input();
+					System.out.print("Enter discount % as a double (e.g. 50% discount = input 50) : ");
+					double discountPercent = (io.doubleInEx(0, 100))/100;
+					coupons.add(new Coupon(couponType, discountPercent));
+				}
+			}
+			else
+			{
+				System.out.print("Enter coupon type : ");
+				String couponType = io.input();
+				System.out.print("Enter discount % as a double (e.g. 50% = input 50) : ");
+				double discountPercent = (io.doubleInEx(0, 100))/100;
+				coupons.add(new Coupon(couponType, discountPercent));
+			}
+			ApplyCoupon(coupons);
+		}
+		Pay(io);
+		System.out.println();
+	}
+	
+	
+	private void ApplyCoupon(ArrayList<Coupon> couponApplied)
+	{
+		//Are there multiple coupons?
+		//Get kind of coupon
+		//Get most expensive Item
+		//Get difference
+		//grandTotal - difference;
+		//
+	}
+	
+	private void Pay(IOshortcut io)
+	{
+		System.out.println("You owe $" + grandTotal);
+		System.out.print("Amount Paid : $");
+		amountPaid = Math.round(io.doubleInLowInc(grandTotal)* 100.0 )/100.0 ;
+		changeDue = amountPaid - grandTotal;
+		System.out.println("  $" + df.format(amountPaid) 
+					   + "\n- $" + grandTotal 
+					   + "\n________" 
+					   + "\n  $" + df.format(changeDue));
 		
 	}
 	
@@ -68,31 +166,27 @@ public class Receipt
 		return receipt;
 	}
 	
-	
+
 	public double getSubtotal()
 	{
-		double subtotal = 0;
-		ArrayList<String> receipt = GenerateReceipt();
-		for (int i = 0; i < receipt.size(); i++)
-		{
-			String[] moneySplit = receipt.get(i).split("\\$");
-			String amountString = (moneySplit[moneySplit.length-1]);
-			Double amount = Double.parseDouble(amountString);
-			//amount = Double.parseDouble(df.format(amount));
-			subtotal = subtotal + amount;
-		}
-		return subtotal;
+		return subTotal;
 	}
 	
 	
 	
-	private double getGrandTotal()
+	public double getGrandTotal()
 	{
-		double subTotal = getSubtotal();
-		double grandTotal = subTotal + (subTotal*0.0775);
-		grandTotal = Math.round(grandTotal* 100.0 )/100.0;
 		return grandTotal;
 	}
+	
+	
+	public void Clear() {
+		numberOfItems = 0;
+		Drinks.clear();
+		Desserts.clear();
+		
+	}
+
 	
 	
 	/**
@@ -262,7 +356,6 @@ public class Receipt
 	{
 		Drinks.add(addition);
 		numberOfItems++;
-		if (addition instanceof BobaDrink);//TODO figure out what's going on here
 	}
 	
 	
@@ -277,17 +370,31 @@ public class Receipt
 	}
 	
 	
+	public int getNumberOfDrinks()
+	{
+		return Drinks.size();
+	}
+	
+	public int getNumberOfDesserts()
+	{
+		return Desserts.size();
+	}
 	
 	public int getNumberOfItems() {
 		return numberOfItems;
 	}
 
 	
+	public static void max()
+	{
+		
+	}
+	
 	/**
 	 * Checks all Desserts on the receipt and finds the most expensive
 	 * @return DessertItem - the most expensive single item on the order
 	 */
-	public static DessertItem MaxDessert()
+ 	public DessertItem MaxDessert()
 	{
 		int numberOfDesserts = Desserts.size();
 		DessertItem currentMax = Desserts.get(0);
@@ -307,7 +414,7 @@ public class Receipt
 	 * Checks all Drinks on the receipt and finds the most expensive
 	 * @return DrinkItem - the most expensive single item on the order
 	 */
-	public static DrinkItem MaxDrink()
+	public DrinkItem MaxDrink()
 	{
 		int numberOfDrinks = Drinks.size();
 		DrinkItem currentMax = Drinks.get(0);
@@ -321,5 +428,8 @@ public class Receipt
 			}
 		return currentMax;
 	}
+
+
+	
 	
 }

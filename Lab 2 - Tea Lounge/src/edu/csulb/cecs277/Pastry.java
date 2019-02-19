@@ -5,7 +5,6 @@ public class Pastry extends DessertItem
 	//quantity, unit price, and heating option
 	//Cost determined by unit price and quantity
 	//Need at least two different
-	int quantity;//TODO ask if this is necessary
 	double unitPrice;
 	boolean heated;
 	

@@ -43,11 +43,10 @@ public class IOshortcut {
 				System.out.println("That is not an acceptable input."); 
 				System.out.print("Please input one of the following options: "); 
 				
-				for (int i = 0; i < a.length - 1; i++) 
+				for (int i = 0; i < a.length; i++) 
 					{ 
 						System.out.print(a[i] + ", "); 
 					} 
-				System.out.println(a[a.length]);
 				response = s.next(); 
 			} 
 		if (response.toUpperCase().equals("Y"))
@@ -106,7 +105,7 @@ public class IOshortcut {
 	 * @param upperBound - the highest acceptable integer input
 	 * @return int - the verified integer input
 	 */
-	public int intIn(int lowerBound, int upperBound) 
+	public int intIn/*Inc*/(int lowerBound, int upperBound) 
 	{ 
 		while(true) 
 			{
@@ -133,8 +132,222 @@ public class IOshortcut {
 					}
 			}
 	}
+	
+	 /**
+	 * .nextInt shorthand with input verification
+	 * @param lowerBound - the lowest acceptable integer input
+	 * @param upperBound - the highest acceptable integer input
+	 * @return int - the verified integer input
+	 */
+	public int intInEx(int lowerBound, int upperBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						int value = s.nextInt(); 
+						while (value <= lowerBound || value >= upperBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a integer within bounds. ("); 
+								print(lowerBound); 
+								print(" - "); 
+								print(upperBound); 
+								print(") : "); 
+								value = s.nextInt(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not an integer");  
+						print("Please input an integer : "); 
+					}
+			}
+	}
+	
+	public double doubleIn()
+	 
+	{ 
+		while(true) 
+			{ 
+				try 
+					{  return s.nextDouble(); } 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not a double");  
+						print("Please input a double : "); 
+					}
+			}
+	}
+	
+	public double doubleInEx(double lowerBound, double upperBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value <= lowerBound || value >= upperBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. ("); 
+								print(lowerBound); 
+								print(" - "); 
+								print(upperBound); 
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not a double");  
+						print("Please input a double : "); 
+					}
+			}
+	}
+	
+	public double doubleInInc(double lowerBound, double upperBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value < lowerBound || value > upperBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. ("); 
+								print(lowerBound); 
+								print(" - "); 
+								print(upperBound); 
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not an double");  
+						print("Please input an double : "); 
+					}
+			}
+	}
+	
+	public double doubleInLowEx(double lowerBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value <= lowerBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. (>"); 
+								print(lowerBound);  
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not a double");  
+						print("Please input a double : "); 
+					}
+			}
+	}
+	
+	public double doubleInLowInc(double lowerBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value < lowerBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. (>="); 
+								print(lowerBound);  
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not an double");  
+						print("Please input an double : "); 
+					}
+			}
+	}
+	
+	public double doubleInUpEx(double upperBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value >= upperBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. (<="); 
+								print(upperBound); 
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not a double");  
+						print("Please input a double : "); 
+					}
+			}
+	}
+	
+	public double doubleInUpInc(double upperBound) 
+	{ 
+		while(true) 
+			{
+				try 
+					{ 
+						double value = s.nextDouble(); 
+						while (value > upperBound) 
+							{ 
+								println("That is not within bounds."); 
+								print("Please enter a double within bounds. (<="); 
+								print(upperBound); 
+								print(") : "); 
+								value = s.nextDouble(); 
+							} 
+						return value; 
+					} 
+				catch(InputMismatchException exception) 
+					{  
+						s.next();  
+						println("This is not an double");  
+						print("Please input an double : "); 
+					}
+			}
+	}
+	
+	
+	
 	//System.out.print short hand 
 	public void print(String output) { System.out.print(output); }
+
 	
 	/**
 	 * System.out.println short hand
@@ -165,4 +378,6 @@ public class IOshortcut {
 	 * @param output - the desired integer to print
 	 */
 	public void println(int output) { System.out.println(output); }
+	
+	public void print(double output) { System.out.print(output); }
 }

@@ -25,14 +25,14 @@ public class CoffeeDrink extends DrinkItem
 		
 		switch (base)
 		{
-			case "Whole": baseChoice = base + " milk"; break;
+			case "Whole": baseChoice = base + " Milk"; break;
 			case "Water": baseChoice = base; break;
-			case "Almond": baseChoice = base + " milk"; break;
+			case "Almond": baseChoice = base + " Milk"; break;
 			default: baseChoice = "Water"; break;
 		}
 		
 		setSweetness(sweetener);
-		String drinkName = super.getSize() + " " + baseChoice + " Coffee with " + sweetener + " sugars";
+		String drinkName = super.getSize() + " " + baseChoice + " Coffee with " + sweetener + " sugar(s)";
 		super.setName(drinkName);
 	}
 	
