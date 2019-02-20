@@ -12,6 +12,7 @@ public class Receipt
 	DecimalFormat df = new DecimalFormat("#.00");
 	double subTotal, grandTotal, amountPaid = 0, changeDue;
 	
+	//TODO coupon imple
 	public void PrintReceipt()
 	{
 		
@@ -27,7 +28,7 @@ public class Receipt
 			{
 				System.out.println(itemAssortment.get(i));
 			}
-			setGrandTotal();
+			GenerateGrandTotal();
 			System.out.println("Subtotal : $" + df.format(subTotal) + " for " + getNumberOfItems() + " item(s)");
 			System.out.println("Grand Total : $" + df.format(grandTotal));
 			if (amountPaid != 0)
@@ -57,7 +58,7 @@ public class Receipt
 	}
 	
 	
-	private void setGrandTotal() {
+	private void GenerateGrandTotal() {
 		setSubTotal();
 		double grandTotalTemp = subTotal + (subTotal*0.0775);
 		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
@@ -121,12 +122,12 @@ public class Receipt
 	
 	private void Pay(IOshortcut io)
 	{
-		System.out.println("You owe $" + grandTotal);
+		System.out.println("You owe $" + df.format(grandTotal));
 		System.out.print("Amount Paid : $");
 		amountPaid = Math.round(io.doubleInLowInc(grandTotal)* 100.0 )/100.0 ;
 		changeDue = amountPaid - grandTotal;
 		System.out.println("  $" + df.format(amountPaid) 
-					   + "\n- $" + grandTotal 
+					   + "\n- $" + df.format(grandTotal) 
 					   + "\n________" 
 					   + "\n  $" + df.format(changeDue));
 		
@@ -276,49 +277,47 @@ public class Receipt
 		String formattedDessert = "";
 		if (item instanceof Macaroon)
 			{
-				if (countOfItem >= 3)
+				Macaroon macItem = ((Macaroon)item);
+				if (macItem.hasTrio())
 					{
-						int trioBundles = countOfItem / 3;
-						int unitAmount = countOfItem % 3;
-						double trioCost = trioBundles * ((Macaroon) item).getTrioCost();
-						double unitCost = unitAmount * ((Macaroon) item).getCost();
-						if (unitAmount > 0)
+						double trioCost = macItem.getTrioCount() * macItem.getTrioCost();
+						double unitCost = macItem.getUnitCount() * macItem.getUnitCost();
+						if (macItem.getUnitCount() > 0)
 							{
-								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
-										df.format(((Macaroon) item).getTrioCost()) + " for 3 : $" + 
-										df.format(trioCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
-										+ df.format(((Macaroon) item).getCost()) + " each : $" + df.format(unitCost) + "\n" +
-										 "\t Total for " + countOfItem + " " + item.getName() + "s : $" + 
-										df.format((unitCost + trioCost));
+								formattedDessert = macItem.getTrioCount() + " - " + macItem.getName() +  " @ " +
+										df.format(macItem.getTrioCost()) + " for 3 : $" + 
+										df.format(trioCost) + "\n" + macItem.getUnitCount() + " - " + item.getName() + " @ " 
+										+ df.format(macItem.getUnitCost()) + " each : $" + df.format(unitCost) + "\n" +
+										 "\t Total for " + (macItem.getTotalCount()) + " " + item.getName() + "s : $" + 
+										df.format(macItem.getCost());
 							}
 						else
 							{
-								formattedDessert = trioBundles + " - " + item.getName() +  " @ " +
-										df.format(((Macaroon) item).getTrioCost()) + " for 3 : $" + 
+								formattedDessert = macItem.getTrioCount() + " - " + item.getName() +  " @ " +
+										df.format(macItem.getTrioCost()) + " for 3 : $" + 
 										df.format(trioCost);
 							}
 					}
 				else
 					{
-						double unitCost = countOfItem * ((Macaroon) item).getCost();	
-						formattedDessert = countOfItem + " - " + item.getName() +  " @ " +
-								df.format(((Macaroon) item).getCost()) + " for each : $" + 
+						double unitCost = macItem.getUnitCount() * macItem.getUnitCost();	
+						formattedDessert = macItem.getUnitCount() + " - " + item.getName() +  " @ " +
+								df.format(macItem.getUnitCost()) + " for each : $" + 
 								df.format(unitCost);
 					}
 			}
-		else if (item instanceof Cookie)
+		else if (item instanceof Cookie) //TODO Continue from here with new implementation
 			{
-				if (countOfItem >= 12)
+				Cookie cookItem = ((Cookie)item);
+				if (cookItem.hasDozen())
 					{
-						int dozens = countOfItem / 12;
-						int unitAmount = countOfItem % 12;
-						double dozenCost = dozens * ((Cookie) item).getDozenCost();
-						double unitCost = unitAmount * ((Cookie) item).getCost();
-						if (unitAmount > 0)
+						double dozenCost = cookItem.getDozenCount()* cookItem.getDozenCost();
+						double unitCost = cookItem.getUnitCount() * cookItem.getCost();
+						if (cookItem.getUnitCount() > 0)
 							{
-								formattedDessert = dozens + " - " + item.getName() +  " @ " +
-										df.format(((Cookie) item).getDozenCost()) + " for 12 : $" + 
-										df.format(dozenCost) + "\n" + unitAmount + " - " + item.getName() + " @ " 
+								formattedDessert = cookItem.getDozenCount() + " - " + item.getName() +  " @ " +
+										df.format(cookItem.getDozenCost()) + " for 12 : $" + 
+										df.format(dozenCost) + "\n" +  + " - " + item.getName() + " @ " 
 										+ df.format(((Cookie) item).getCost()) + " each : $" + df.format(unitCost) + "\n" +
 										 "\t Total for " + countOfItem + " " + item.getName() + "s : $" + 
 										df.format((unitCost + dozenCost));
@@ -394,19 +393,9 @@ public class Receipt
 	 * Checks all Desserts on the receipt and finds the most expensive
 	 * @return DessertItem - the most expensive single item on the order
 	 */
- 	public DessertItem MaxDessert()
+	public static DessertItem MaxDessert(ArrayList<DessertItem> desserts)
 	{
-		int numberOfDesserts = Desserts.size();
-		DessertItem currentMax = Desserts.get(0);
-		for (int i = 0; i < numberOfDesserts; i++)
-			{
-				int temp = currentMax.compareTo(Desserts.get(i));
-				if (temp == 1)
-					{
-						currentMax = Desserts.get(i);
-					}
-			}
-		return currentMax;
+		return Collections.max(desserts);
 	}
 	
 	
@@ -414,19 +403,9 @@ public class Receipt
 	 * Checks all Drinks on the receipt and finds the most expensive
 	 * @return DrinkItem - the most expensive single item on the order
 	 */
-	public DrinkItem MaxDrink()
+	public static DrinkItem MaxDrink(ArrayList<DrinkItem> drinks)
 	{
-		int numberOfDrinks = Drinks.size();
-		DrinkItem currentMax = Drinks.get(0);
-		for (int i = 0; i < numberOfDrinks; i++)
-			{
-				int temp = currentMax.compareTo(Drinks.get(i));
-				if (temp == 1)
-					{
-						currentMax = Drinks.get(i);
-					}
-			}
-		return currentMax;
+		return Collections.max(drinks);
 	}
 
 

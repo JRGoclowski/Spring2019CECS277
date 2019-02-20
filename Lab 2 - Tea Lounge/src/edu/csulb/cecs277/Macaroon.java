@@ -1,12 +1,50 @@
 package edu.csulb.cecs277;
 
-public class Macaroon extends Cookie
+public class Macaroon extends Cookie implements Comparable
 {
 	// has quantity, unit price, price per three (cheaper in 3s)
 	// Cos is calculated by threes and remainder by types
 	double unitCost, trioCost;
+	int trioCount, unitCount;
 	
-	public Macaroon(int choice)
+	public int compareTo(Object arg) 
+	{
+		DessertItem otherDessert = (DessertItem) arg;
+		if (hasTrio())
+			{
+				if (getTrioCost() < otherDessert.getCost())
+					{
+						return -1;
+					}
+				else if (getTrioCost() > otherDessert.getCost())
+					{
+						return 1;
+					}
+				else
+					{
+						return 0;
+					}
+			}
+		else
+			{
+				if (getUnitCost() < otherDessert.getCost())
+					{
+						return -1;
+					}
+				else if (getUnitCost() > otherDessert.getCost())
+					{
+						return 1;
+					}
+				else
+					{
+						return 0;
+					}
+			}
+		
+		
+	}
+	
+	public Macaroon(int choice, int quantity)
 	{
 		switch(choice) 
 		{
@@ -20,14 +58,47 @@ public class Macaroon extends Cookie
 				unitCost = 1.50; trioCost = 4.00; break;
 		}
 		
+		if (quantity >= 3)
+			{
+				trioCount = quantity / 3;
+				unitCount = quantity % 3;
+			}
+		else
+			{
+				unitCount = quantity;
+			}
 	}
 	public double getCost()
+	{
+		
+		return ((trioCost*trioCount) + (unitCost*unitCount));
+	}
+	
+	public boolean hasTrio()
+	{
+		return (trioCount>0);
+	}
+	public double getTrioCost()
+	{
+		return trioCost;
+	}
+	
+	public double getUnitCost()
 	{
 		return unitCost;
 	}
 	
-	public double getTrioCost()
+	public int getTotalCount()
 	{
-		return trioCost;
+		return (trioCount*3 + unitCount);
+	}
+	
+	public int getTrioCount()
+	{
+		return trioCount;
+	}
+	public int getUnitCount()
+	{
+		return unitCount;
 	}
 }

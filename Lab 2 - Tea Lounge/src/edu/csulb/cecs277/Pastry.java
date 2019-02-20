@@ -33,6 +33,10 @@ public class Pastry extends DessertItem
 	
 	public double getCost()
 	{
+		if (heated == true)
+			{
+				return (unitPrice + 0.25);
+			}
 		return unitPrice;
 	}
 }

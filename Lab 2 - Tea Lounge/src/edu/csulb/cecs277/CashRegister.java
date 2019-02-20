@@ -167,13 +167,14 @@ public class CashRegister
 				+ "\n3 - Peanut Butter Cookies - $0.80 each\n\t\t- $8.00 per dozen"
 				+ "\nEnter choice : ");
 		int dessertType= io.intIn(1, 3)-1;
-		Cookie desiredDessert = new Cookie(dessertType);
+		Cookie desiredDessert = null;
 		int numberDesired = 0;
 		boolean correctCount = false;
 		while (!correctCount)
 		{
 			System.out.print("How many would you like to add : ");
 			numberDesired = io.intIn();
+			desiredDessert = new Cookie (dessertType, numberDesired);
 			System.out.print("You would like to add " + numberDesired + " " + desiredDessert.getName() +"(s)." 
 					+ "\nIs this correct? [Y]es/[N]o : ");
 			correctCount = io.YesOrNo();
@@ -201,21 +202,19 @@ public class CashRegister
 				+ "\nEnter choice : ");
 		int dessertType= io.intIn(1, 4)-1;
 		System.out.println();
-		Macaroon desiredDessert = new Macaroon(dessertType);
+		Macaroon desiredDessert = null;
 		int numberDesired = 0;
 		boolean correctCount = false;
 		while (!correctCount)
 		{
 			System.out.print("How many would you like to add : ");
 			numberDesired = io.intIn();
+			desiredDessert = new Macaroon(dessertType, numberDesired);
 			System.out.print("You would like to add " + numberDesired + " " + desiredDessert.getName() +"(s)." 
 					+ "\nIs this correct? [Y]es/[N]o : ");
 			correctCount = io.YesOrNo();
 		}
-		for (int i = 0; i < numberDesired; i++)
-		{
-			order.AddDessert(desiredDessert);
-		}
+		order.AddDessert(desiredDessert);
 		System.out.println();
 		System.out.println("Added " + numberDesired + " " + desiredDessert.getName() +"(s).");
 		System.out.println();
