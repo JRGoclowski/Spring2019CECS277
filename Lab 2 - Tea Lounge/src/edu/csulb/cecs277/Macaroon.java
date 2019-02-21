@@ -7,6 +7,9 @@ public class Macaroon extends Cookie implements Comparable
 	double unitCost, trioCost;
 	int trioCount, unitCount;
 	
+	/**
+	 * Implements the compareTo function for the special case of macaroons
+	 */
 	public int compareTo(Object arg) 
 	{
 		DessertItem otherDessert = (DessertItem) arg;
@@ -44,6 +47,11 @@ public class Macaroon extends Cookie implements Comparable
 		
 	}
 	
+	/**
+	 * Constructor for a macaroon
+	 * @param choice - the integer form the of the chosen macaroon
+	 * @param quantity - the quantity of macaroons desired
+	 */
 	public Macaroon(int choice, int quantity)
 	{
 		switch(choice) 
@@ -68,35 +76,66 @@ public class Macaroon extends Cookie implements Comparable
 				unitCount = quantity;
 			}
 	}
+	
+	/**
+	 * Returns the total cost of the object
+	 * @return double - the total cost of the Object
+	 */
 	public double getCost()
 	{
 		
 		return ((trioCost*trioCount) + (unitCost*unitCount));
 	}
 	
+	/**
+	 * Returns whether or not there is a trio bundle for the object 
+	 * @return boolean - if there is a trio bundle
+	 */
 	public boolean hasTrio()
 	{
 		return (trioCount>0);
 	}
+
+	/**
+	 *Returns the cost for a trio of the macaroon 
+	 * @return double - the cost for a trio
+	 */
 	public double getTrioCost()
 	{
 		return trioCost;
 	}
 	
+	/**
+	 * Returnst the unit cost of a single macaroon
+	 * @return double - the cost of a single macaroon
+	 */
 	public double getUnitCost()
 	{
 		return unitCost;
 	}
 	
+	/**
+	 * Returns how many macaroons there are in total
+	 * @return int - the number of macaroons in the item
+	 */
 	public int getTotalCount()
 	{
 		return (trioCount*3 + unitCount);
 	}
 	
+	/**
+	 * returns the number of trio bundles of the objects
+	 * @return int - the number of trios
+	 */ 
 	public int getTrioCount()
 	{
 		return trioCount;
 	}
+	
+	/**
+	 * The number of single macaroons not included in bundles
+	 * @return int - the number of unbundled macaroons
+	 */
 	public int getUnitCount()
 	{
 		return unitCount;

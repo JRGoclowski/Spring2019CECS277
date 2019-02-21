@@ -12,6 +12,9 @@ public class CashRegister
 	static IOshortcut io = new IOshortcut();
 	static ArrayList <Receipt> orders = new ArrayList<Receipt>();
 	
+	/**
+	 * The main menu of options and choices for the register
+	 */
 	public void showOptions()
 	{
 		boolean continueRunning = true;
@@ -37,6 +40,9 @@ public class CashRegister
 		
 	}
 	
+	/**
+	 * Prints a summary of previous orders, and gives the option to see one in more detail
+	 */
 	private void PrintPreviousOrder()
 	{
 		if (orders.isEmpty())
@@ -65,6 +71,10 @@ public class CashRegister
 		
 	}
 	
+	/**
+	 * Creates a new order, and gives all the options assosciated with a new order
+	 * @return Receipt - A receipt of the complete order
+	 */
 	private Receipt newOrder() 
 	{
 		Receipt currentOrder = new Receipt();
@@ -87,8 +97,7 @@ public class CashRegister
 				case 3: addDesserts(currentOrder); break;
 				case 4: currentOrder.Clear(); 
 					System.out.println("Order Cleared! New order begun"); break;
-				case 5: 
-					currentOrder.FinalizeOrder(io);; orderComplete = true; break;
+				case 5: FinalizeOrder(currentOrder); orderComplete = true; break;
 				
 			}
 		}
@@ -97,6 +106,50 @@ public class CashRegister
 		
 	}
 	
+	/**
+	 * Finishes an order, receiving payment, applying coupons, and providing change
+	 * @param order - the order to be finalized
+	 */
+	private void FinalizeOrder(Receipt order)
+	{
+		if (order.getNumberOfItems() == 0)
+		{
+			System.out.println("There is nothing on this order, the order is now closed");
+			return;
+		}
+		order.PrintReceipt();
+		System.out.println();
+		System.out.print("Is there a coupon to apply? [Y]es/[N]o : ");
+		boolean hasCoupon = io.YesOrNo();
+		System.out.println();
+		if (hasCoupon)
+		{
+			System.out.print("Is the coupon for a : "
+					+ "\n1 - Dessert"
+					+ "\n2 - Drink"
+					+ "\nEnter choice :");
+			String couponType = "";
+			int choice = io.intIn(1, 2);
+			switch(choice)
+			{
+				case 1: couponType = "Dessert"; break;
+				case 2: couponType = "Drink"; break;
+			}
+			System.out.print("Enter discount % as a double (e.g. 50% = input 50) : ");
+			double discountPercent = (io.doubleInEx(0, 100))/100;
+			order.setCoupon(new Coupon(couponType, discountPercent));  
+		}
+		order.PrintReceipt();
+		System.out.println("You owe $" + order.getGrandTotalFormatted());
+		System.out.print("Amount Paid : $");
+		order.setAmountPaid(Math.round(io.doubleInLowInc(order.getGrandTotal())* 100.0 )/100.0 );
+		order.setChangeDue(order.getAmountPaid() - order.getGrandTotal());
+		System.out.println("  $" + order.getAmountPaidFormatted() 
+					   + "\n- $" + order.getGrandTotalFormatted() 
+					   + "\n________" 
+					   + "\n  $" + order.getChangeDue());
+		
+	}
 	
 	/**
 	 * Creates a menu for the user to decide what kind of dessert they want to add to the order
@@ -159,7 +212,7 @@ public class CashRegister
 	 * Creates a menu for the user to decide what kind of Cookies to add to the order, and how many.
 	 * @param order - The receipt that the Cookies will be added to.
 	 */
-	private void AddCookies(Receipt order) //TODO Add Prices
+	private void AddCookies(Receipt order)
 	{
 		System.out.print("Would you like to add: \n"
 				+ "\n1 - Chocolate Chip Cookies - $0.50 each\n\t\t- $5.00 per dozen"
@@ -179,10 +232,7 @@ public class CashRegister
 					+ "\nIs this correct? [Y]es/[N]o : ");
 			correctCount = io.YesOrNo();
 		}
-		for (int i = 0; i < numberDesired; i++)
-		{
-			order.AddDessert(desiredDessert);
-		}
+		order.AddDessert(desiredDessert);
 		System.out.println();
 		System.out.println("Added " + numberDesired + " " + desiredDessert.getName() +"(s).");
 		System.out.println();
@@ -300,7 +350,7 @@ public class CashRegister
 				"Lyche Jelly", "Coconut Jelly","Mini Mochi"};
 		ArrayList <Integer> toppings = new ArrayList<Integer>();
 		char size;
-		int sweetness, choice, topping;
+		int sweetness, choice;
 		String milk, base;
 		System.out.print("What size? \n"
 				+ "\n1 - Small"

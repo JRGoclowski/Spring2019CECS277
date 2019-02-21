@@ -87,7 +87,11 @@ public abstract class DrinkItem implements Comparable
 	{
 		this.size = size;
 	}
-
+	
+	/**
+	 * Abstract method to get the cost of a drink
+	 * @return double - the cost of a drink
+	 */
 	public abstract double getCost();
 	
 		

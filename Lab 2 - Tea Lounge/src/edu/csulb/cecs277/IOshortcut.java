@@ -12,9 +12,13 @@ public class IOshortcut {
 		s = new Scanner(System.in);
 	}
 	
-	//Allows for user string input. Also checks the user input against 
-	//an array of acceptable inputs, and returns an error message 
-	//if the input is not one of the desired inputs 
+	/**
+	 * Allows for user string input. Also checks the user input against an 
+	 * array of acceptable inputs, and returns an error 
+	 * message if the input is not one of the desired inputs 
+	 * @param a - list of acceptable inputs
+	 * @return String -the verified input
+	 */
 	public String stringInUpper(String[] a) 
 	{ 
 		String response = s.next(); 
@@ -34,6 +38,10 @@ public class IOshortcut {
 		return response.toUpperCase(); 
 	}
 	
+	/**
+	 * A simple method to return a boolean for yes or no questions
+	 * @return boolean - true for yes
+	 */
 	public boolean YesOrNo() 
 	{ 
 		String[] a = {"Y","N"};
@@ -81,8 +89,6 @@ public class IOshortcut {
 	 * .nextInt shorthand
 	 * @return int - the integer collected
 	 */
-	//Allows for user integer input. If the input is not an integer 
-	//returns an error message and requires the user input an integer 
 	public int intIn()
  
 	{ 
@@ -167,6 +173,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification
+	 * @return
+	 */
 	public double doubleIn()
 	 
 	{ 
@@ -183,6 +193,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification, with exclusive bounds
+	 * @return
+	 */
 	public double doubleInEx(double lowerBound, double upperBound) 
 	{ 
 		while(true) 
@@ -211,6 +225,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification, with inclusive bounds
+	 * @return
+	 */
 	public double doubleInInc(double lowerBound, double upperBound) 
 	{ 
 		while(true) 
@@ -239,6 +257,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification, with an exclusive lower bound
+	 * @return
+	 */
 	public double doubleInLowEx(double lowerBound) 
 	{ 
 		while(true) 
@@ -265,6 +287,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification, with an inclusive lower bound
+	 * @return
+	 */
 	public double doubleInLowInc(double lowerBound) 
 	{ 
 		while(true) 
@@ -291,6 +317,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification, with an exclusive upperBound
+	 * @return
+	 */
 	public double doubleInUpEx(double upperBound) 
 	{ 
 		while(true) 
@@ -317,6 +347,10 @@ public class IOshortcut {
 			}
 	}
 	
+	/**
+	 * .nextDouble shorthand with input verification. with an inclusive upperBound
+	 * @return
+	 */
 	public double doubleInUpInc(double upperBound) 
 	{ 
 		while(true) 
@@ -345,7 +379,10 @@ public class IOshortcut {
 	
 	
 	
-	//System.out.print short hand 
+	/**
+	 * System.out.print short hand 
+	 * @param output
+	 */
 	public void print(String output) { System.out.print(output); }
 
 	
@@ -379,5 +416,9 @@ public class IOshortcut {
 	 */
 	public void println(int output) { System.out.println(output); }
 	
+	/**
+	 * prints a double
+	 * @param output - the double to be printed
+	 */
 	public void print(double output) { System.out.print(output); }
 }

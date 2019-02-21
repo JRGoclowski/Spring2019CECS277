@@ -7,7 +7,12 @@ public class Pastry extends DessertItem
 	//Need at least two different
 	double unitPrice;
 	boolean heated;
-	
+	 
+	/**
+	  * Constructs a pastry object 
+	  * @param choice - the integer form for the choice 
+	  * @param heatChoice - boolean whether or not it is heated
+	  */
 	public Pastry(int choice, boolean heatChoice)
 	{
 		String name;
@@ -31,6 +36,10 @@ public class Pastry extends DessertItem
 		super.setName(name);
 	}
 	
+	/**
+	 * Returns the cost of the item
+	 * @return double - the cost of the item
+	 */
 	public double getCost()
 	{
 		if (heated == true)

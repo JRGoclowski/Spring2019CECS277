@@ -68,6 +68,10 @@ public class BobaDrink extends DrinkItem
 		updateName();
 	}
 	
+	/**
+	 * Returns the options list for toppings
+	 * @return String[] - the list of toppings
+	 */
 	public String[] getOptions() {
 		return options;
 	}

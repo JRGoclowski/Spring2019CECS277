@@ -42,7 +42,22 @@ public class Coupon {
 		return percentDiscount;
 	}
 	
+	/**
+	 * Returns the itemType String of the coupon
+	 * @return String - the item type the coupon applies to
+	 */
+	public String getItemType() {
+		return itemType;
+	}
 	
+	/**
+	 * Returns if the coupon is a valid coupon
+	 * @return boolean -whether or not the coupon is valid
+	 */
+	public boolean isValid() {
+		return isValid;
+	}
+
 	/**
 	 * returns a string representation of this coupon that reads
 	 * 'This coupon is valid for <discount amount>% off any <item type> time.'
