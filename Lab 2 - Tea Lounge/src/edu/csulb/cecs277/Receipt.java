@@ -64,103 +64,6 @@ public class Receipt
 	}
 	
 	/**
-	 * sets the subtotal for the given arraylist string
-	 * @param receipt - The string arraylist to represent the desired receipt
-	 */
-	private void setSubTotal(ArrayList<String> receipt ) 
-	{
-		subTotal = 0;
-		for (int i = 0; i < receipt.size(); i++)
-		{
-			String[] moneySplit = receipt.get(i).split("\\$");
-			String amountString = (moneySplit[moneySplit.length-1]);
-			Double amount = Double.parseDouble(amountString);
-			//amount = Double.parseDouble(df.format(amount));
-			subTotal = subTotal + amount;
-		}
-	}
-	
-	/**
-	 * Generates the grand total by applying tax to the subtotal
-	 */
-	private void GenerateGrandTotal() {		
-		double grandTotalTemp = subTotal + (subTotal*0.0775);
-		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
-	}
-	
-	/**
-	 * Applys the coupon assosciated with the order
-	 * @return String - the string that represents the coupons discount, and its affect on the receipts
-	 */
-	private String ApplyCoupon()
-	{
-		if (coupon.getItemType().equals("Drink"))
-		{
-			DrinkItem biggestItem= MaxDrink(Drinks);
-			subTotal = subTotal - (biggestItem.getCost()*coupon.getDiscount());
-			String discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-				+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
-			return discountString; 
-		}
-		else
-		{
-			DessertItem biggestItem = MaxDessert(Desserts);
-			double reduction = 0;
-			String discountString = "";
-			if (biggestItem instanceof Macaroon)
-			{
-				
-				if (((Macaroon) biggestItem).hasTrio())
-				{
-					reduction = (((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount());
-					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-					+ " : $" + df.format((((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount())) + ")";
-				}
-				else
-				{
-					reduction = (((Macaroon) biggestItem).getUnitCost()*coupon.getDiscount());
-					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-					+ " : $" + df.format((((Macaroon)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
-				}
-			}
-			else if (biggestItem instanceof Cookie)
-			{
-				if (((Cookie) biggestItem).hasDozen())
-				{
-					reduction = (((Cookie) biggestItem).getDozenCost()*coupon.getDiscount());
-					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-					+ " : $" + df.format((((Cookie)biggestItem).getDozenCost()*coupon.getDiscount())) + ")";
-				}
-				else
-				{
-					reduction = (((Cookie) biggestItem).getUnitCost()*coupon.getDiscount());
-					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-					+ " : $" + df.format((((Cookie)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
-				}
-			}
-			else
-			{
-				reduction = biggestItem.getCost()*coupon.getDiscount();
-				discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
-				+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
-			}
-			subTotal = subTotal - (reduction);
-//			String discount = "(" + coupon.getDiscount() + "% off the " + biggestItem.toString()
-//				+ " : $" + (biggestItem.getCost()*coupon.getDiscount()) + ")";
-			return discountString; 
-		}
-	}
-
-	/**
-	 * Updates the coupon attached to the receipt
-	 * @param coup - the coupon to be attached to the receipt
-	 */
-	public void setCoupon(Coupon coup)
-	{
-		coupon = coup;
-	}
-	
-	/**
 	 * Creates an arraylist of each element on the receipt
 	 * @return ArrayList - arraylist of strings, for each item on the receipt
 	 */
@@ -195,6 +98,130 @@ public class Receipt
 					}
 			}
 		return receipt;
+	}
+
+	/**
+	 * Generates the grand total by applying tax to the subtotal
+	 */
+	private void GenerateGrandTotal() {		
+		double grandTotalTemp = subTotal + (subTotal*0.0775);
+		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
+	}
+
+	/**
+		 * Applys the coupon assosciated with the order
+		 * @return String - the string that represents the coupons discount, and its affect on the receipts
+		 */
+		private String ApplyCoupon()
+		{
+			if (coupon.getItemType().equals("Drink"))
+			{
+				DrinkItem biggestItem= MaxDrink(Drinks);
+				subTotal = subTotal - (biggestItem.getCost()*coupon.getDiscount());
+				String discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+					+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
+				return discountString; 
+			}
+			else
+			{
+				DessertItem biggestItem = MaxDessert(Desserts);
+				double reduction = 0;
+				String discountString = "";
+				if (biggestItem instanceof Macaroon)
+				{
+					
+					if (((Macaroon) biggestItem).hasTrio())
+					{
+						reduction = (((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount())) + ")";
+					}
+					else
+					{
+						reduction = (((Macaroon) biggestItem).getUnitCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Macaroon)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
+					}
+				}
+				else if (biggestItem instanceof Cookie)
+				{
+					if (((Cookie) biggestItem).hasDozen())
+					{
+						reduction = (((Cookie) biggestItem).getDozenCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Cookie)biggestItem).getDozenCost()*coupon.getDiscount())) + ")";
+					}
+					else
+					{
+						reduction = (((Cookie) biggestItem).getUnitCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Cookie)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
+					}
+				}
+				else
+				{
+					reduction = biggestItem.getCost()*coupon.getDiscount();
+					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+					+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
+				}
+				subTotal = subTotal - (reduction);
+	//			String discount = "(" + coupon.getDiscount() + "% off the " + biggestItem.toString()
+	//				+ " : $" + (biggestItem.getCost()*coupon.getDiscount()) + ")";
+				return discountString; 
+			}
+		}
+
+	/**
+	 * Adds a drink to the drink arrayList
+	 * @param addition - the drink to be added
+	 */
+	public void AddDrink(DrinkItem addition)
+	{
+		Drinks.add(addition);
+		numberOfItems++;
+	}
+
+	/**
+	 * Adds a dessert to the dessert arrayList
+	 * @param addition - the dessert to be added
+	 */
+	public void AddDessert(DessertItem addition)
+	{
+		Desserts.add(addition);
+		if (addition instanceof Cookie)
+			{
+				numberOfItems += ((Cookie) addition).getTotalCount();
+			}
+		else
+			{
+				numberOfItems++;
+			}
+	}
+
+	/**
+	 * sets the subtotal for the given arraylist string
+	 * @param receipt - The string arraylist to represent the desired receipt
+	 */
+	private void setSubTotal(ArrayList<String> receipt ) 
+	{
+		subTotal = 0;
+		for (int i = 0; i < receipt.size(); i++)
+		{
+			String[] moneySplit = receipt.get(i).split("\\$");
+			String amountString = (moneySplit[moneySplit.length-1]);
+			Double amount = Double.parseDouble(amountString);
+			//amount = Double.parseDouble(df.format(amount));
+			subTotal = subTotal + amount;
+		}
+	}
+	
+	/**
+	 * Updates the coupon attached to the receipt
+	 * @param coup - the coupon to be attached to the receipt
+	 */
+	public void setCoupon(Coupon coup)
+	{
+		coupon = coup;
 	}
 	
 	/**
@@ -391,33 +418,6 @@ public class Receipt
 			}
 		
 		return formattedDessert;
-	}
-	
-	/**
-	 * Adds a drink to the drink arrayList
-	 * @param addition - the drink to be added
-	 */
-	public void AddDrink(DrinkItem addition)
-	{
-		Drinks.add(addition);
-		numberOfItems++;
-	}
-	
-	/**
-	 * Adds a dessert to the dessert arrayList
-	 * @param addition - the dessert to be added
-	 */
-	public void AddDessert(DessertItem addition)
-	{
-		Desserts.add(addition);
-		if (addition instanceof Cookie)
-			{
-				numberOfItems += ((Cookie) addition).getTotalCount();
-			}
-		else
-			{
-				numberOfItems++;
-			}
 	}
 	
 	/**
