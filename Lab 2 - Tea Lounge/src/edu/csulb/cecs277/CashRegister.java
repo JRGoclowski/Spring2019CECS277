@@ -57,7 +57,7 @@ public class CashRegister
 			System.out.println((i+1) + "- " + givenOrder.getNumberOfItems() + " Items"
 					+ "\n" + givenOrder.getNumberOfDrinks() + " Drinks"
 					+ "\n" + givenOrder.getNumberOfDesserts() + " Desserts"
-					+ "\nTotal Due : " + givenOrder.getGrandTotal());
+					+ "\nTotal Due : " + givenOrder.getGrandTotalFormatted());
 			System.out.println();
 		}
 		System.out.print("Enter the number of the desired order to see a detailed view"
