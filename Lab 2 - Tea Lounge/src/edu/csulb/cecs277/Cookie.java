@@ -1,6 +1,6 @@
 package edu.csulb.cecs277;
 
-public class Cookie extends DessertItem
+public class Cookie extends DessertItem implements Comparable
 {
 	//Has quantity and price per dozen
 	//cost is quantity and price per dozen
@@ -12,6 +12,10 @@ public class Cookie extends DessertItem
 		
 	}
 	
+	/**
+	 * Implements the compareTo method for the max Dessert function
+	 * @param arg - the object to compare to the cookie
+	 */
 	public int compareTo(Object arg) 
 	{
 		DessertItem otherDessert = (DessertItem) arg;
@@ -49,6 +53,11 @@ public class Cookie extends DessertItem
 		
 	}
 	
+	/**
+	 * Constructor for the cookie
+	 * @param choice - the integer to decide which cookie to make
+	 * @param quantity - the number of cookies desired for the object
+	 */
 	public Cookie(int choice, int quantity)
 	{
 		switch (choice)
@@ -72,36 +81,64 @@ public class Cookie extends DessertItem
 			}
 	}
 	
+	/**
+	 * Returns the total cost of the cookie Object for the whole quantity
+	 * @return double - the total cost for all cookies in the object
+	 */
 	public double getCost()
 	{
 		return ((dozenCost*dozenCount) + (unitCost*unitCount));
 	}
 	
+	/**
+	 * whether or not there is at least 12 cookies, and a dozen bundle
+	 * @return boolean - whether or not there is a dozen cookies
+	 */
 	public boolean hasDozen()
 	{
 		return (dozenCount>0);
 	}
 	
+	/**
+	 * Returns the cost of a dozen cookies
+	 * @return double - the cost of a dozen cookies
+	 */
 	public double getDozenCost()
 	{
 		return dozenCost;
 	}
 	
+	/**
+	 * Returns the Unit Cost Of a single cookie
+	 * @return double -  the cost of a single cookie
+	 */
 	public double getUnitCost()
 	{
 		return unitCost;
 	}
 	
+	/**
+	 * Returns how many cookies in total are in the object
+	 * @return int - the total number of cookies
+	 */
 	public int getTotalCount()
 	{
 		return (dozenCount*12 + unitCount);
 	}
 	
+	/**
+	 * Returns how many dozens are in the object
+	 * @return int - the number of dozens
+	 */
 	public int getDozenCount()
 	{
 		return dozenCount;
 	}
 	
+	/**
+	 * Returns the number of individual cookies not included in a bundle
+	 * @return int - the number of individual cookies
+	 */
 	public int getUnitCount()
 	{
 		return unitCount;

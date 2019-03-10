@@ -4,6 +4,11 @@ import java.lang.Math;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * 
+ * @author Jonathan Goclowski
+ *
+ */
 public class Receipt
 {
 	ArrayList<DrinkItem> Drinks = new ArrayList<DrinkItem>();
@@ -11,8 +16,12 @@ public class Receipt
 	int numberOfItems;
 	DecimalFormat df = new DecimalFormat("#.00");
 	double subTotal, grandTotal, amountPaid = 0, changeDue;
+	Coupon coupon = null;
 	
-	//TODO coupon imple
+	/**
+	 * Prints out to the console the full receipt
+	 * The form of the receipt will change depending on the presence of varaibles such as coupons or amountPaid
+	 */
 	public void PrintReceipt()
 	{
 		
@@ -22,14 +31,26 @@ public class Receipt
 		}
 		else
 		{
+			Sort();
 			ArrayList<String> itemAssortment = GenerateReceipt();
 			System.out.println();
 			for (int i = 0; i < itemAssortment.size(); i++)
 			{
 				System.out.println(itemAssortment.get(i));
 			}
+			setSubTotal(itemAssortment);
 			GenerateGrandTotal();
+			String discount = null;
+			if (coupon != null)
+			{
+				discount = ApplyCoupon();
+			}
 			System.out.println("Subtotal : $" + df.format(subTotal) + " for " + getNumberOfItems() + " item(s)");
+			if (coupon!=null)
+			{
+				System.out.println(discount);
+				GenerateGrandTotal();
+			}
 			System.out.println("Grand Total : $" + df.format(grandTotal));
 			if (amountPaid != 0)
 			{
@@ -42,101 +63,12 @@ public class Receipt
 		
 	}
 	
-	
-	private void setSubTotal() 
-	{
-		subTotal = 0;
-		ArrayList<String> receipt = GenerateReceipt();
-		for (int i = 0; i < receipt.size(); i++)
-		{
-			String[] moneySplit = receipt.get(i).split("\\$");
-			String amountString = (moneySplit[moneySplit.length-1]);
-			Double amount = Double.parseDouble(amountString);
-			//amount = Double.parseDouble(df.format(amount));
-			subTotal = subTotal + amount;
-		}
-	}
-	
-	
-	private void GenerateGrandTotal() {
-		setSubTotal();
-		double grandTotalTemp = subTotal + (subTotal*0.0775);
-		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
-	}
-	
-	
-	public void FinalizeOrder(IOshortcut io)
-	{
-		
-		if (numberOfItems == 0)
-		{
-			System.out.println("There is nothing on this order, the order is now closed");
-			return;
-		}
-		System.out.print("Is there a coupon to apply? [Y]es/[N]o : ");
-		boolean hasCoupon = io.YesOrNo();
-		PrintReceipt();
-		System.out.println();
-		if (hasCoupon)
-		{
-			ArrayList<Coupon> coupons = new ArrayList<Coupon>();
-			System.out.print("Is there more than one coupon? [Y]es/[N]o");
-			boolean multipleCoupons = io.YesOrNo();
-			if (multipleCoupons)
-			{
-				System.out.print("Enter number of coupons :");
-				int couponCount = io.intIn();
-				for (int i = 0; i < couponCount; i++)
-				{
-					System.out.print("Enter coupon type : ");
-					String couponType = io.input();
-					System.out.print("Enter discount % as a double (e.g. 50% discount = input 50) : ");
-					double discountPercent = (io.doubleInEx(0, 100))/100;
-					coupons.add(new Coupon(couponType, discountPercent));
-				}
-			}
-			else
-			{
-				System.out.print("Enter coupon type : ");
-				String couponType = io.input();
-				System.out.print("Enter discount % as a double (e.g. 50% = input 50) : ");
-				double discountPercent = (io.doubleInEx(0, 100))/100;
-				coupons.add(new Coupon(couponType, discountPercent));
-			}
-			ApplyCoupon(coupons);
-		}
-		Pay(io);
-		System.out.println();
-	}
-	
-	
-	private void ApplyCoupon(ArrayList<Coupon> couponApplied)
-	{
-		//Are there multiple coupons?
-		//Get kind of coupon
-		//Get most expensive Item
-		//Get difference
-		//grandTotal - difference;
-		//
-	}
-	
-	private void Pay(IOshortcut io)
-	{
-		System.out.println("You owe $" + df.format(grandTotal));
-		System.out.print("Amount Paid : $");
-		amountPaid = Math.round(io.doubleInLowInc(grandTotal)* 100.0 )/100.0 ;
-		changeDue = amountPaid - grandTotal;
-		System.out.println("  $" + df.format(amountPaid) 
-					   + "\n- $" + df.format(grandTotal) 
-					   + "\n________" 
-					   + "\n  $" + df.format(changeDue));
-		
-	}
-	
-	
+	/**
+	 * Creates an arraylist of each element on the receipt
+	 * @return ArrayList - arraylist of strings, for each item on the receipt
+	 */
 	private ArrayList<String> GenerateReceipt() 
 	{
-		Sort();
 		ArrayList<String> receipt = new ArrayList<String> (); 
 		ArrayList<String> addedItems = new ArrayList<String>();
 		for (int i = 0 ; i < Drinks.size(); i++)
@@ -160,35 +92,183 @@ public class Receipt
 					}
 				else
 					{
-						receipt.add(GenerateLine(Desserts.get(i)));
-						addedItems.add(Desserts.get(i).toString());
+						DessertItem dessertToAdd = Desserts.get(i);
+						receipt.add(GenerateLine(dessertToAdd));
+						addedItems.add(dessertToAdd.toString());
 					}
 			}
 		return receipt;
 	}
-	
 
+	/**
+	 * Generates the grand total by applying tax to the subtotal
+	 */
+	private void GenerateGrandTotal() {		
+		double grandTotalTemp = subTotal + (subTotal*0.0775);
+		grandTotal = Math.round(grandTotalTemp* 100.0 )/100.0;
+	}
+
+	/**
+		 * Applys the coupon assosciated with the order
+		 * @return String - the string that represents the coupons discount, and its affect on the receipts
+		 */
+		private String ApplyCoupon()
+		{
+			if (coupon.getItemType().equals("Drink"))
+			{
+				DrinkItem biggestItem= MaxDrink(Drinks);
+				subTotal = subTotal - (biggestItem.getCost()*coupon.getDiscount());
+				String discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+					+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
+				return discountString; 
+			}
+			else
+			{
+				DessertItem biggestItem = MaxDessert(Desserts);
+				double reduction = 0;
+				String discountString = "";
+				if (biggestItem instanceof Macaroon)
+				{
+					
+					if (((Macaroon) biggestItem).hasTrio())
+					{
+						reduction = (((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Macaroon) biggestItem).getTrioCost()*coupon.getDiscount())) + ")";
+					}
+					else
+					{
+						reduction = (((Macaroon) biggestItem).getUnitCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Macaroon)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
+					}
+				}
+				else if (biggestItem instanceof Cookie)
+				{
+					if (((Cookie) biggestItem).hasDozen())
+					{
+						reduction = (((Cookie) biggestItem).getDozenCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Cookie)biggestItem).getDozenCost()*coupon.getDiscount())) + ")";
+					}
+					else
+					{
+						reduction = (((Cookie) biggestItem).getUnitCost()*coupon.getDiscount());
+						discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+						+ " : $" + df.format((((Cookie)biggestItem).getUnitCost()*coupon.getDiscount())) + ")";
+					}
+				}
+				else
+				{
+					reduction = biggestItem.getCost()*coupon.getDiscount();
+					discountString = "(" + df.format(coupon.getDiscount()*100) + "% off the " + biggestItem.toString()
+					+ " : $" + df.format((biggestItem.getCost()*coupon.getDiscount())) + ")";
+				}
+				subTotal = subTotal - (reduction);
+	//			String discount = "(" + coupon.getDiscount() + "% off the " + biggestItem.toString()
+	//				+ " : $" + (biggestItem.getCost()*coupon.getDiscount()) + ")";
+				return discountString; 
+			}
+		}
+
+	/**
+	 * Adds a drink to the drink arrayList
+	 * @param addition - the drink to be added
+	 */
+	public void AddDrink(DrinkItem addition)
+	{
+		Drinks.add(addition);
+		numberOfItems++;
+	}
+
+	/**
+	 * Adds a dessert to the dessert arrayList
+	 * @param addition - the dessert to be added
+	 */
+	public void AddDessert(DessertItem addition)
+	{
+		Desserts.add(addition);
+		if (addition instanceof Cookie)
+			{
+				numberOfItems += ((Cookie) addition).getTotalCount();
+			}
+		else
+			{
+				numberOfItems++;
+			}
+	}
+
+	/**
+	 * sets the subtotal for the given arraylist string
+	 * @param receipt - The string arraylist to represent the desired receipt
+	 */
+	private void setSubTotal(ArrayList<String> receipt ) 
+	{
+		subTotal = 0;
+		for (int i = 0; i < receipt.size(); i++)
+		{
+			String[] moneySplit = receipt.get(i).split("\\$");
+			String amountString = (moneySplit[moneySplit.length-1]);
+			Double amount = Double.parseDouble(amountString);
+			//amount = Double.parseDouble(df.format(amount));
+			subTotal = subTotal + amount;
+		}
+	}
+	
+	/**
+	 * Updates the coupon attached to the receipt
+	 * @param coup - the coupon to be attached to the receipt
+	 */
+	public void setCoupon(Coupon coup)
+	{
+		coupon = coup;
+	}
+	
+	/**
+	 * Returns the subtotal value
+	 * @return subtotal - the subtotal for the receipt
+	 */
 	public double getSubtotal()
 	{
 		return subTotal;
 	}
 	
+	/**
+	 * returns a string form of the subtotal, formatted to a money format
+	 * @return String - the formatted subtotal
+	 */
+	public String getSubtotalFormatted()
+	{
+		return df.format(subTotal);
+	}
 	
-	
+	/**
+	 * Returns the grand total of the receipt
+	 * @return double - the grand total
+	 */
 	public double getGrandTotal()
 	{
 		return grandTotal;
 	}
 	
+	/**
+	 * Returns the grand total formatted as a string in a money format
+	 * @return String - the formatted grand total
+	 */
+	public String getGrandTotalFormatted()
+	{
+		return df.format(grandTotal);
+	}
 	
+	/**
+	 * Resets the receipt to be empty
+	 */
 	public void Clear() {
 		numberOfItems = 0;
 		Drinks.clear();
 		Desserts.clear();
 		
 	}
-
-	
 	
 	/**
 	 * Sorts the items on the receipt to be organized by class
@@ -200,7 +280,6 @@ public class Receipt
 		
 	}
 	
-	
  	/**
 	 * counts how many of a given drink item are on the order
 	 * @param item - the item to be counted
@@ -208,7 +287,6 @@ public class Receipt
 	 */
 	private int GetNumberOf(DrinkItem item)
 	{
-		Sort();
 		int count = 0;
 		for (int i = 0 ; i < Drinks.size(); i++)
 			{
@@ -224,7 +302,6 @@ public class Receipt
 		return count;
 	}
 	
-	
 	/**
 	 * counts how many of a given dessert item are on the order
 	 * @param item - the item to be counted
@@ -232,7 +309,6 @@ public class Receipt
 	 */
 	private int GetNumberOf(DessertItem item)
 	{
-		Sort();
 		int count = 0;
 		for (int i = 0 ; i < Desserts.size(); i++)
 			{
@@ -248,7 +324,6 @@ public class Receipt
 		return count;
 	}
 	
-	
 	/**
 	 * Generates a string to be printed on the receipt with the count of the drink,
 	 * the name of the drink, how much it is per drink, and the total.
@@ -263,7 +338,6 @@ public class Receipt
 				+ df.format(item.getCost()) + " each : $" + df.format(totalCost);
 		return lineOrder;
 	}
-	
 	
 	/**
 	 * Generates a string to be printed on the receipt with the count of the dessert,
@@ -306,35 +380,35 @@ public class Receipt
 								df.format(unitCost);
 					}
 			}
-		else if (item instanceof Cookie) //TODO Continue from here with new implementation
+		else if (item instanceof Cookie)
 			{
 				Cookie cookItem = ((Cookie)item);
 				if (cookItem.hasDozen())
 					{
 						double dozenCost = cookItem.getDozenCount()* cookItem.getDozenCost();
-						double unitCost = cookItem.getUnitCount() * cookItem.getCost();
+						double unitCost = cookItem.getUnitCount() * cookItem.getUnitCost();
 						if (cookItem.getUnitCount() > 0)
 							{
 								formattedDessert = cookItem.getDozenCount() + " - " + item.getName() +  " @ " +
 										df.format(cookItem.getDozenCost()) + " for 12 : $" + 
-										df.format(dozenCost) + "\n" +  + " - " + item.getName() + " @ " 
-										+ df.format(((Cookie) item).getCost()) + " each : $" + df.format(unitCost) + "\n" +
-										 "\t Total for " + countOfItem + " " + item.getName() + "s : $" + 
+										df.format(dozenCost) + "\n" + cookItem.getUnitCount() + " - " + item.getName() + " @ " 
+										+ df.format(((Cookie) item).getUnitCost()) + " each : $" + df.format(unitCost) + "\n" +
+										 "\t Total for " + cookItem.getTotalCount() + " " + item.getName() + "s : $" + 
 										df.format((unitCost + dozenCost));
 							}
 						else
 							{
-								formattedDessert = dozens + " - " + item.getName() +  " @ " +
+								formattedDessert = cookItem.getDozenCount() + " - " + item.getName() +  " @ " +
 										df.format(((Cookie) item).getDozenCost()) + " for 12 : $" + 
 										df.format(dozenCost);
 							}
 					}
 				else
-				{
-					double totalCost = countOfItem * item.getCost();
-					formattedDessert = countOfItem + " - " + item.getName() + " @ " 
-							+ df.format(item.getCost()) + " each : $" + df.format(totalCost);
-				}
+					{
+						double totalCost = cookItem.getUnitCount() * cookItem.getUnitCost();
+						formattedDessert = cookItem.getUnitCount() + " - " + item.getName() + " @ " 
+								+ df.format(cookItem.getUnitCost()) + " each : $" + df.format(totalCost);
+					}
 			}
 		else
 			{
@@ -345,50 +419,76 @@ public class Receipt
 		
 		return formattedDessert;
 	}
-
 	
 	/**
-	 * Adds a drink to the drink arrayList
-	 * @param addition - the drink to be added
+	 * Returns the size of the drink array, which is the number of drinks
+	 * @return int - number of drinks on the order
 	 */
-	public void AddDrink(DrinkItem addition)
-	{
-		Drinks.add(addition);
-		numberOfItems++;
-	}
-	
-	
-	/**
-	 * Adds a dessert to the dessert arrayList
-	 * @param addition - the dessert to be added
-	 */
-	public void AddDessert(DessertItem addition)
-	{
-		Desserts.add(addition);
-		numberOfItems++;
-	}
-	
-	
 	public int getNumberOfDrinks()
 	{
 		return Drinks.size();
 	}
 	
+	/**
+	 * Returns the number of desserts, by subtracting the number of drinks
+	 * from the total number of Items. This accounts for the fact that the 
+	 * desserts array does not get the count of items with a quantity > 1
+	 * @return int - the number of desserts on the order
+	 */
 	public int getNumberOfDesserts()
 	{
-		return Desserts.size();
+		return (numberOfItems - Drinks.size());
 	}
 	
+	/**
+	 * Returns the total number of items on the receipt
+	 * @return int - the count of the items on the receipt
+	 */
 	public int getNumberOfItems() {
 		return numberOfItems;
 	}
-
 	
-	public static void max()
-	{
-		
+	/**
+	 * Returns the amount that was paid for the receipt
+	 * @return double - the amount paid
+	 */
+	public double getAmountPaid() {
+		return amountPaid;
 	}
 	
+	/**
+	 * Returns the amount that was paid as a formated string
+	 * @return String - the formatted amount paid
+	 */
+	public String getAmountPaidFormatted() {
+		return df.format(amountPaid);
+	}
+	
+	/**
+	 * Sets the amount of the amountPaid variable 
+	 * @param amountPaid - the amount that was paid
+	 */
+	public void setAmountPaid(double amountPaid) {
+		this.amountPaid = amountPaid;
+	}
+	
+	
+	/**
+	 * Returns the string form of the changeDue 
+	 * @return String - changeDue variable 
+	 */
+	public String getChangeDue() {
+		return df.format(changeDue);
+	}
+
+	/**
+	 * Sets the changeDue variable
+	 * @param changeDue - the changeDuevariable
+	 */
+	public void setChangeDue(double changeDue) {
+		this.changeDue = changeDue;
+	}
+
 	/**
 	 * Checks all Desserts on the receipt and finds the most expensive
 	 * @return DessertItem - the most expensive single item on the order

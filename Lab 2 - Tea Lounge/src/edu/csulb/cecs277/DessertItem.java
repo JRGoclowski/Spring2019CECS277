@@ -52,5 +52,9 @@ public abstract class DessertItem implements Comparable
 		this.name = name;
 	}
 	
+	/**
+	 * Abstract method to get the cost of a dessert
+	 * @return double - the cost of a dessert
+	 */
 	public abstract double getCost();
 }
