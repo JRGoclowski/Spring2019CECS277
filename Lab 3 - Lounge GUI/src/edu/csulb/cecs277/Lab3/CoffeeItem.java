@@ -16,11 +16,15 @@ public class CoffeeItem extends DrinkItem
 		specialInstructions = instruct;
 	}
 	
-	public double getCost() {
+	public double calculateCost() {
 		double total = 0;
-		total = getBasePrice();
-		if (temperature.equals("Blended"))
-			{
+		switch (size) {
+			case "S": total += 1.00;
+			case "M": total += 1.50;
+			case "L": total += 2.00;
+			default: total += 2.00 ;
+		}
+		if (temperature.equals("Blended")) {
 				total += 0.25;
 			}
 		if (!getMilk().equals("No Milk"))
@@ -30,21 +34,13 @@ public class CoffeeItem extends DrinkItem
 		return total;
 	}
 	
-	private double getBasePrice() {
-		switch (size) {
-			case "S": return 1.00;
-			case "M": return 1.50;
-			case "L": return 2.00;
-			default: return 2.00 ;
-		}
-	}
-
 	public String toString() {
-		String coffeeName = getFlavor() + temperature + " Coffee (" + getSize() + ") "
+		String coffeeName = getFlavor() + temperature + " Coffee (" + getSize() + ")"
 				+ " - " + getSweetness() + " Teaspoon(s) Sugar, with " + getMilk();
 		if (!specialInstructions.equals(null)) {
 			coffeeName += ", " + specialInstructions;
 		}
 		return coffeeName;
+		/*return getFlavor() + temperature + " Coffee (" + getSize() + ")"*/
 	}
 }

@@ -56,9 +56,7 @@ public abstract class DrinkItem extends Item
 		return milk;
 	}
 	
-	public String toString() {
-		
-	}
+	public abstract String toString();
 	
 	
 }

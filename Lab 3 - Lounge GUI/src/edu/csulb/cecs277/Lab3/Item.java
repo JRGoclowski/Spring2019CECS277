@@ -9,8 +9,9 @@ public abstract class Item
 		
 	}
 	
-	protected Item(String name, double cost) {
-	
+	protected Item(String nameString, double costDouble) {
+		name = nameString;
+		cost = costDouble;
 	}
 	
 	public void setName(String nameString) {
@@ -25,5 +26,10 @@ public abstract class Item
 		return name;
 	}
 	
-	public abstract double getCost();
+	public double getCost() {
+		calculateCost();
+		return cost;
+	}
+	
+	public abstract double calculateCost();
 }

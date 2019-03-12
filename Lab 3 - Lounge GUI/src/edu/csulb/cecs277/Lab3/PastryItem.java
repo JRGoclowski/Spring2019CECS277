@@ -10,14 +10,9 @@ public class PastryItem extends Item
 		super.setName(name);
 		flavor = flavorString;
 		isHeated = heated;
-		
 	}
 	
-	public double getCost() {
-		
-	}
-	
-	public static double getPrice(String flavor, String name) {
+	public double calculateCost() {
 		double cost = 0;
 		switch (name) {
 			case "Muffin": cost = 2.00; break;
@@ -31,11 +26,20 @@ public class PastryItem extends Item
 				}; break;
 			default: cost = 2.00; break;
 		}
+		if (isHeated) { cost += HEAT_PRICE; }
 		return cost;
 	}
 	
 	public String toString() {
 		return flavor + super.getName();
+		/*
+		 * String nameString = getName() +  " (" 
+		 * if (isHeated) {
+		 * 		nameString += "heated)"
+		 * }
+		 * else {
+		 * 		nameString += "unheated)"
+		 * }*/
 	}
 	
 }
