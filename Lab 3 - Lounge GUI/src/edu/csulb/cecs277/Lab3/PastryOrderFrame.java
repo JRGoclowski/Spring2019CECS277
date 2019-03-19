@@ -1,18 +1,242 @@
 package edu.csulb.cecs277.Lab3;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import edu.csulb.cecs277.Lab3.CoffeeOrderFrame.CancelButtonListener;
+import edu.csulb.cecs277.Lab3.CoffeeOrderFrame.SaveButtonListener;
 
 public class PastryOrderFrame extends JFrame {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	
+	private JComboBox<String> items;
+	private JComboBox<String> flavors;
+	
+	private JLabel heated = new JLabel("Heated");
+	
+	private JPanel mainPanel;
+		
+	private JButton save;
+	private JButton cancel;
+	
+	private JCheckBox heatOption = new JCheckBox();
+	
+	private InitialFrame mainFrame;
+	private Receipt mainReceipt;
+	
+	public PastryOrderFrame(InitialFrame main, Receipt receiptArg) {
+		createComponentsBase();
+		mainFrame = main;
+		mainReceipt = receiptArg;
+		this.setTitle("New Pastry Order");
+		this.setSize(800, 500);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+	
+	public void createComponentsBase() {
+		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
+		items = new JComboBox<String>(itemOps);
+		
+		ItemComboListener iCListener = new ItemComboListener();
+		items.addActionListener(iCListener);
+			
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
+		cancel.addActionListener(cancelListener);
+		
+		mainPanel = new JPanel();
+		
+		mainPanel.add(items);
+		mainPanel.add(cancel);
+		this.add(mainPanel);
+	}
+	
+	public void createComponentsMuffin() {
+		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
+		items = new JComboBox<String>(itemOps);		
+		String[] flavorOps = {"Banana Nut", "Blueberry", "Chocolate Chip", "Coffee Cake"};
+		flavors = new JComboBox<String>(flavorOps);
+		items.setSelectedItem("Muffin");
+		
+		ItemComboListener iCListener = new ItemComboListener();
+		items.addActionListener(iCListener);
+		
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
+		cancel.addActionListener(cancelListener);
+		
+		save = new JButton("Save");
+		ActionListener saveListener = new SaveButtonListener();
+		save.addActionListener(saveListener);
+		
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		
+		mainPanel.add(items);
+		mainPanel.add(flavors);
+		mainPanel.add(heatOption);
+		mainPanel.add(heated);
+		mainPanel.add(save);
+		mainPanel.add(cancel);
+		
+		this.add(mainPanel);
+	}
+	
+	public void createComponentsCookie() {
+		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
+		items = new JComboBox<String>(itemOps);		
+		String[] flavorOps = {"Oatmeal", "White Chocolate & Macadamias", "Chocolate Chip", "Double Fudge"};
+		flavors = new JComboBox<String>(flavorOps);
+		items.setSelectedItem("Cookie");
+		
+		ItemComboListener iCListener = new ItemComboListener();
+		items.addActionListener(iCListener);
+		
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
+		cancel.addActionListener(cancelListener);
+		
+		save = new JButton("Save");
+		ActionListener saveListener = new SaveButtonListener();
+		save.addActionListener(saveListener);
+		
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		
+		mainPanel.add(items);
+		mainPanel.add(flavors);
+		mainPanel.add(heatOption);
+		mainPanel.add(heated);
+		mainPanel.add(save);
+		mainPanel.add(cancel);
+		
+		this.add(mainPanel);
+	}
+	
+	public void createComponentsDanish() {
+		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
+		items = new JComboBox<String>(itemOps);		
+		String[] flavorOps = {"Apple Cinnamon", "Strawberry & Cheeses", "Double Cheese"};
+		flavors = new JComboBox<String>(flavorOps);
+		items.setSelectedItem("Danish");
+		
+		ItemComboListener iCListener = new ItemComboListener();
+		items.addActionListener(iCListener);
+		
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
+		cancel.addActionListener(cancelListener);
+		
+		save = new JButton("Save");
+		ActionListener saveListener = new SaveButtonListener();
+		save.addActionListener(saveListener);
+		
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		
+		mainPanel.add(items);
+		mainPanel.add(flavors);
+		mainPanel.add(heatOption);
+		mainPanel.add(heated);
+		mainPanel.add(save);
+		mainPanel.add(cancel);
+		
+		this.add(mainPanel);
 
 	}
+	
+	public void createComponentsCheesecake() {
+		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
+		items = new JComboBox<String>(itemOps);		
+		String[] flavorOps = {"Regular", "Cherry", "Blueberry"};
+		flavors = new JComboBox<String>(flavorOps);
+		items.setSelectedItem("Cheesecake");
+		
+		
+		ItemComboListener iCListener = new ItemComboListener();
+		items.addActionListener(iCListener);
+		
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
+		cancel.addActionListener(cancelListener);
+		
+		save = new JButton("Save");
+		ActionListener saveListener = new SaveButtonListener();
+		save.addActionListener(saveListener);
+		
+		mainPanel.removeAll();
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		
+		mainPanel.add(items);
+		mainPanel.add(flavors);
+		mainPanel.add(heatOption);
+		mainPanel.add(heated);
+		mainPanel.add(save);
+		mainPanel.add(cancel);
+		
+		this.add(mainPanel);
+	}
+	
+	class ItemComboListener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent select) {
+			String itemChoice = (String) items.getSelectedItem();
+			switch (itemChoice) {
+				case "Muffin": 
+					createComponentsMuffin(); 
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					break;
+				case "Cookie": 
+					createComponentsCookie(); 
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					break;
+				case "Danish": 
+					createComponentsDanish(); 
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					break;
+				case "Cheesecake": 
+					createComponentsCheesecake(); 
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					break;
+			}
+		}
+	}
+	
+	class SaveButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent click) {
+			PastryItem addPastry = new PastryItem((String)items.getSelectedItem(), 
+					(String)flavors.getSelectedItem(), heatOption.isSelected());
+			mainReceipt.AddItem(addPastry);
+			mainFrame.update();
+			Component button = (Component) click.getSource();
+			JFrame frame = (JFrame) SwingUtilities.getRoot(button);
+			frame.setVisible(false);
+		}
+	} 
+	
+	class CancelButtonListener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent click) {
+			mainFrame.update();
+			setVisible(false);
+		}
+	}
+	
 
 }

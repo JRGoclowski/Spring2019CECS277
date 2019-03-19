@@ -1,5 +1,6 @@
 package edu.csulb.cecs277.Lab3;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import edu.csulb.cecs277.Lab3.CoffeeOrderFrame.CancelButtonListener;
 import edu.csulb.cecs277.Lab3.CoffeeOrderFrame.SaveButtonListener;
@@ -38,9 +40,14 @@ public class TeaOrderFrame extends JFrame {
 	private JCheckBox coconutJelly;
 	private JCheckBox miniMochi;
 	
-	public TeaOrderFrame() {
+	private InitialFrame mainFrame;
+	private Receipt mainReceipt;
+	private String[] drinkFeatures = new String[4];
+	
+	public TeaOrderFrame(InitialFrame main, Receipt receiptArg) {
 		createComponents();
-		
+		mainFrame = main;
+		mainReceipt = receiptArg;
 		this.setTitle("New Tea Order");
 		this.setSize(800, 500);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -87,14 +94,14 @@ public class TeaOrderFrame extends JFrame {
 		panel.add(sweetness);
 		panel.add(new JLabel("Milk: "));
 		panel.add(milkTypes);
-		panel.add(save);
-		panel.add(cancel);
 		panel.add(boba);
 		panel.add(poppingBoba);
 		panel.add(grassJelly);
 		panel.add(lycheeJelly);
 		panel.add(coconutJelly);
 		panel.add(miniMochi);
+		panel.add(save);
+		panel.add(cancel);
 		
 		this.add(panel);
 	}
@@ -102,21 +109,33 @@ public class TeaOrderFrame extends JFrame {
 	class CancelButtonListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent click) {
-			//TODO complete this
+			mainFrame.update();
+			setVisible(false);
 		}
 	}
 	
 	class SaveButtonListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent click) {
-			//TODO complete this
+			drinkFeatures[0] = (String) size.getSelectedItem();
+			drinkFeatures[1] = (String) flavors.getSelectedItem();
+			drinkFeatures[2] = (String) sweetness.getSelectedItem();
+			drinkFeatures[3] = (String) milkTypes.getSelectedItem();
+			TeaItem addTea = new TeaItem(drinkFeatures[0], drinkFeatures[1], drinkFeatures[2],
+					drinkFeatures[3]);
+			if (boba.isSelected()) { addTea.addTopping("Boba");}
+			if (poppingBoba.isSelected()) { addTea.addTopping("Popping Boba");}
+			if (grassJelly.isSelected()) { addTea.addTopping("Grass Jelly");}
+			if (lycheeJelly.isSelected()) { addTea.addTopping("Lychee Jelly");}
+			if (coconutJelly.isSelected()) { addTea.addTopping("Coconut Jelly");}
+			if (miniMochi.isSelected()) { addTea.addTopping("Mini Mochi");}
+			mainReceipt.AddItem(addTea);
+			mainFrame.update();
+			Component button = (Component) click.getSource();
+			JFrame frame = (JFrame) SwingUtilities.getRoot(button);
+			frame.setVisible(false);
 		}
 	}
 	
-	public static void main(String[] args) {
-		CoffeeOrderFrame c = new CoffeeOrderFrame();
-		c.setVisible(true);
-
-	}
 
 }

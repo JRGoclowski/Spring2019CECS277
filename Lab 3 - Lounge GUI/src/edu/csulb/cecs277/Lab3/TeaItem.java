@@ -25,6 +25,10 @@ public class TeaItem extends DrinkItem
 		toppings.add(addition);
 	}
 	
+	public ArrayList<String> getToppings() {
+		return toppings;
+	}
+
 	public double calculateCost() {
 		double total = 0;
 		switch (getSize()) {
@@ -41,7 +45,7 @@ public class TeaItem extends DrinkItem
 	}
 	
 	public String toString() {
-		String teaName = getSize() + " " + getFlavor() + " Tea " + getSweetness() + " with " + getMilk () + " and "; 
+		/*String teaName = getSize() + " " + getFlavor() + " Tea " + getSweetness() + " with " + getMilk () + " and "; 
 		if (toppings.isEmpty())
 			{
 				teaName += "no toppings";
@@ -58,7 +62,7 @@ public class TeaItem extends DrinkItem
 				}
 				teaName += ("and " + toppings.get(toppings.size() - 1));
 			}
-		return teaName;
-		/*return flavor + " Tea (" + getSize() + ")"*/
+		return teaName;*/
+		return getFlavor() + " Tea (" + getSize() + ")";
 	}
 }

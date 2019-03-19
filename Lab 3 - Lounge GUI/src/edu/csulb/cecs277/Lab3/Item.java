@@ -27,7 +27,7 @@ public abstract class Item
 	}
 	
 	public double getCost() {
-		calculateCost();
+		cost = calculateCost();
 		return cost;
 	}
 	

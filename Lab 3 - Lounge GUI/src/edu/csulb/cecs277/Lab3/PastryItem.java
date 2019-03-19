@@ -30,6 +30,15 @@ public class PastryItem extends Item
 		return cost;
 	}
 	
+	public boolean isHeated() {
+		return isHeated;
+	}
+	
+
+	public String getFlavor() {
+		return flavor;
+	}
+
 	public String toString() {
 		return flavor + super.getName();
 		/*

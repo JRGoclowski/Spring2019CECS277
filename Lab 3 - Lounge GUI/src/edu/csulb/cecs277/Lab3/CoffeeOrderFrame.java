@@ -1,5 +1,6 @@
 package edu.csulb.cecs277.Lab3;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,16 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class CoffeeOrderFrame extends JFrame {
 	
-	private JLabel choices;
 	private JLabel instructions;
-	private JLabel flavor;
-	private JLabel sizes;
-	private JLabel sugar;
-	private JLabel milk;
-	private JLabel type;
 	
 	private JComboBox<String> flavors;
 	private JComboBox<String> size;
@@ -31,9 +27,14 @@ public class CoffeeOrderFrame extends JFrame {
 	
 	private JTextField instructionField;
 	
-	public CoffeeOrderFrame() {
+	private String[] drinkFeatures = new String[6];
+	InitialFrame mainFrame;
+	Receipt mainReceipt;
+	
+	public CoffeeOrderFrame(InitialFrame mFrame, Receipt receiptArg) {
+		mainFrame = mFrame;
+		mainReceipt = receiptArg;
 		createComponents();
-		
 		this.setTitle("New Coffee Order");
 		this.setSize(800, 500);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -66,6 +67,9 @@ public class CoffeeOrderFrame extends JFrame {
 		save.addActionListener(saveListener);
 		cancel.addActionListener(cancelListener);
 		
+		instructionField = new JTextField("Enter Instructions");
+		instructionField.setColumns(50);
+		
 		JPanel panel = new JPanel();
 		panel.add(new JLabel("Specify the Coffee Order: "));
 		panel.add(new JLabel("Flavor: "));
@@ -85,25 +89,43 @@ public class CoffeeOrderFrame extends JFrame {
 		
 		this.add(panel);
 	}
-	
+
 	class CancelButtonListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent click) {
-			//TODO complete this
+			mainFrame.update();
+			setVisible(false);
 		}
 	}
 	
 	class SaveButtonListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent click) {
-			//TODO complete this
+			drinkFeatures[0] = (String) size.getSelectedItem();
+			drinkFeatures[1] = (String) flavors.getSelectedItem();
+			drinkFeatures[2] = (String) sugarTsp.getSelectedItem();
+			drinkFeatures[3] = (String) milkTypes.getSelectedItem();
+			drinkFeatures[4] = (String) temperature.getSelectedItem();
+			String instrString = (String) instructionField.getText();
+			if (instrString.equals("Enter Instructions") || instrString.equals("")) {
+				drinkFeatures[5] = "None";
+			}
+			else {
+				drinkFeatures[5] = instrString;
+			}
+			
+			CoffeeItem addCoffee = new CoffeeItem(drinkFeatures[0], drinkFeatures[1], drinkFeatures[2],
+					drinkFeatures[3], drinkFeatures[4], drinkFeatures[5]);
+			mainReceipt.AddItem(addCoffee);
+			mainFrame.update();
+			Component button = (Component) click.getSource();
+			JFrame frame = (JFrame) SwingUtilities.getRoot(button);
+			frame.setVisible(false);
 		}
-	}
+	} 
 	
-	public static void main(String[] args) {
-		CoffeeOrderFrame c = new CoffeeOrderFrame();
-		c.setVisible(true);
-
+	public String[] getDrinkFeatures() {
+		return drinkFeatures;
 	}
 
 }
