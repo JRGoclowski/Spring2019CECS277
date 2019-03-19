@@ -49,7 +49,7 @@ public class TeaOrderFrame extends JFrame {
 		mainFrame = main;
 		mainReceipt = receiptArg;
 		this.setTitle("New Tea Order");
-		this.setSize(800, 500);
+		this.setSize(850, 500);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
@@ -61,7 +61,7 @@ public class TeaOrderFrame extends JFrame {
 		String[] sizeOps = {"S", "M", "L"};
 		size = new JComboBox<String>(sizeOps);
 		
-		String[] sweetOps = {"full sweetnened", "3/4 sweetened", "1/2 sweetened", "1/4 sweetened", "unsweetened"}; 
+		String[] sweetOps = {"full", "3/4", "1/2", "1/4", "unsweet"}; 
 		sweetness = new JComboBox<String>(sweetOps);
 		
 		String[] milkOps = {"Whole Milk", "Half-and-half", "No Milk"}; 
@@ -76,16 +76,17 @@ public class TeaOrderFrame extends JFrame {
 		
 		
 		save = new JButton("Save");
-		cancel = new JButton("Cancel");
-		
 		ActionListener saveListener = new SaveButtonListener();
-		ActionListener cancelListener = new CancelButtonListener();
-		
 		save.addActionListener(saveListener);
+		save.setSize(50, 20);
+		
+		cancel = new JButton("Cancel");
+		ActionListener cancelListener = new CancelButtonListener();
 		cancel.addActionListener(cancelListener);
+		cancel.setSize(50,20);
 		
 		JPanel panel = new JPanel();
-		panel.add(new JLabel("Specify the Coffee Order: "));
+		panel.add(new JLabel("Specify the Tea Order: "));
 		panel.add(new JLabel("Tea: "));
 		panel.add(flavors);
 		panel.add(new JLabel("Size: "));
@@ -94,14 +95,15 @@ public class TeaOrderFrame extends JFrame {
 		panel.add(sweetness);
 		panel.add(new JLabel("Milk: "));
 		panel.add(milkTypes);
+		panel.add(save);
+		panel.add(cancel);
 		panel.add(boba);
 		panel.add(poppingBoba);
 		panel.add(grassJelly);
 		panel.add(lycheeJelly);
 		panel.add(coconutJelly);
 		panel.add(miniMochi);
-		panel.add(save);
-		panel.add(cancel);
+		
 		
 		this.add(panel);
 	}

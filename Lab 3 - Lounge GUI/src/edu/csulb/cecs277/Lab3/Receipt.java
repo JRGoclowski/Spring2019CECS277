@@ -25,15 +25,15 @@ public class Receipt {
 		for (Item currentItem : orderedItems) {
 			receipt.add((FormatItem(currentItem) + "\n\n"));
 		}
-		String fullReceipt = "~~~~~~~~~~~~~~~~~~~~~ Current Order ~~~~~~~~~~~~~~~~~~~~~\n\n";
+		String fullReceipt = "\t   ~~~~~~~~~~~~~~~~~~~~~~ Current Order ~~~~~~~~~~~~~~~~~~~~~~\n\n";
 		for (String item : receipt) {
 			fullReceipt += item;
 		}
 		double sub = (Double.parseDouble(df.format(subTotal)));
-		fullReceipt += "Subtotal:\t\t$" + df.format(sub) + "\n";
+		fullReceipt += "\t   Subtotal:\t\t$" + df.format(sub) + "\n";
 		double tax = (Double.parseDouble(df.format(subTotal*0.1)));
-		fullReceipt += "Tax: \t\t$" + df.format((tax)) + "\n";
-		fullReceipt += "Grand Total: \t\t$" + getGrandString();
+		fullReceipt += "\t   Tax: \t\t$" + df.format((tax)) + "\n";
+		fullReceipt += "\t   Grand Total: \t\t$" + getGrandString();
 		return fullReceipt;
 	}
 
@@ -56,7 +56,11 @@ public class Receipt {
 	
 	public String FormatDrink(DrinkItem drink) {
 		String formattedDrink = "";
-		formattedDrink = "--" + drink.toString() + "\t\t\t$" + df.format(drink.getCost())
+		formattedDrink = "\t   --" + drink.toString() + "\t\t\t";
+		//if (drink instanceof TeaItem && !(drink.getFlavor().equals("Jasmine Green") || (drink.getFlavor().equals("Oolong")))) {
+			//formattedDrink += "\t";
+		//}
+			formattedDrink += "$" + df.format(drink.getCost())
 			+ "\n\t\tSweetness: " + drink.getSweetness();
 		if (drink instanceof CoffeeItem) { formattedDrink += " Teaspoon(s)";}
 		formattedDrink += "\n\t\tMilk: " + drink.getMilk();
@@ -85,7 +89,7 @@ public class Receipt {
 	}
 	
 	public String FormatPastry(PastryItem Pastry) {
-		String formattedPastry = "--" + Pastry.getName() + " (";
+		String formattedPastry = "\t   --" + Pastry.getName() + " (";
 		if (!Pastry.isHeated()) {
 			formattedPastry += "un";
 		}

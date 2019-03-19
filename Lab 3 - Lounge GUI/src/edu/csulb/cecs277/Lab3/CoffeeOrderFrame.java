@@ -68,7 +68,7 @@ public class CoffeeOrderFrame extends JFrame {
 		cancel.addActionListener(cancelListener);
 		
 		instructionField = new JTextField("Enter Instructions");
-		instructionField.setColumns(50);
+		instructionField.setColumns(40);
 		
 		JPanel panel = new JPanel();
 		panel.add(new JLabel("Specify the Coffee Order: "));

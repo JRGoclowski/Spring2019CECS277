@@ -2,6 +2,7 @@ package edu.csulb.cecs277.Lab3;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -30,6 +32,8 @@ public class FinalizeOrderFrame extends JFrame {
 	
 	private JButton payButton;
 	
+	private JScrollPane receiptPane;
+	
 	private JTextArea receiptText;
 	
 	private JTextField paymentField;
@@ -45,9 +49,9 @@ public class FinalizeOrderFrame extends JFrame {
 		
 	public FinalizeOrderFrame(Receipt receiptArg) {
 		mainReceipt = receiptArg;
-		
-		totalDue = mainReceipt.getGrandTotal();
+
 		grandString = mainReceipt.getGrandString();
+		totalDue = Double.parseDouble(grandString);
 		receiptString = mainReceipt.CreateFull();
 		
 		createComponents();
@@ -64,6 +68,10 @@ public class FinalizeOrderFrame extends JFrame {
 		receiptText = new JTextArea(receiptString);
 		paymentField = new JTextField(grandString);
 		
+		receiptPane = new JScrollPane(receiptText);
+		receiptPane.setPreferredSize(new Dimension(600, 350));
+		receiptPane.setVisible(true);
+		
 		initialPanel = new JPanel(new BorderLayout());
 		totalPanel = new JPanel();
 		receiptPanel = new JPanel();
@@ -73,9 +81,11 @@ public class FinalizeOrderFrame extends JFrame {
 		ActionListener payListener = new PayButtonListener();
 		payButton.addActionListener(payListener);
 		
+		
+		
 		totalPanel.add(amountDueLabel);
 		totalPanel.add(totalCostLabel);
-		receiptPanel.add(receiptText);
+		receiptPanel.add(receiptPane);
 		payPanel.add(paymentLabel);
 		payPanel.add(paymentField);
 		payPanel.add(payButton);
@@ -111,8 +121,8 @@ public class FinalizeOrderFrame extends JFrame {
 		initialPanel.repaint();
 		totalPanel.add(new JLabel("Thank You!"));
 		
-		receiptString += "\n\nPayment: $" + df.format(amountPaid) 
-			+ "\nChange Due: $" + df.format(changeDue);
+		receiptString = receiptString + "\n\n\t   Payment: $" + df.format(amountPaid) 
+			+ "\n\t   Change Due: $" + df.format(changeDue);
 		receiptText.setText(receiptString);
 		
 		JButton exitButton = new JButton("Exit");

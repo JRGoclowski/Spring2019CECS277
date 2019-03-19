@@ -1,6 +1,8 @@
 package edu.csulb.cecs277.Lab3;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -10,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class InitialFrame extends JFrame {
@@ -21,6 +24,8 @@ public class InitialFrame extends JFrame {
 	private JButton pastryButton;
 	private JButton doneButton;
 		
+	private JScrollPane receiptPane;
+	
 	private JTextArea receiptText;
 	
 	private Receipt mReceipt;
@@ -41,6 +46,7 @@ public class InitialFrame extends JFrame {
 		if (!mReceipt.isEmpty()) {
 			receiptText.setText(mReceipt.CreateFull());
 			receiptText.setVisible(true);
+			receiptPane.setVisible(true);
 		}
 		iF.repaint();
 	}
@@ -50,28 +56,40 @@ public class InitialFrame extends JFrame {
 		receiptText = new JTextArea();
 		receiptText.setEditable(false);
 		receiptText.setVisible(false);
+		
+		receiptPane = new JScrollPane(receiptText);
+		receiptPane.setPreferredSize(new Dimension(600, 350));
+		receiptPane.setVisible(true);
+		
+		
 		coffeeButton = new JButton("Coffee");
-		teaButton = new JButton("Tea");
-		pastryButton = new JButton("Pastry");
-		doneButton = new JButton("Done");
-		doneButton.setVisible(false);
-		
 		ActionListener coffeeListener = new CoffeeButtonListener();
-		ActionListener teaListener = new TeaButtonListener();
-		ActionListener pastryListener = new PastryButtonListener();
-		ActionListener doneListener = new DoneButtonListener();
-		
 		coffeeButton.addActionListener(coffeeListener);
-		teaButton.addActionListener(teaListener);
-		pastryButton.addActionListener(pastryListener);
-		doneButton.addActionListener(doneListener);
 		
+		teaButton = new JButton("Tea");
+		ActionListener teaListener = new TeaButtonListener();
+		teaButton.addActionListener(teaListener);
+		
+		pastryButton = new JButton("Pastry");
+		ActionListener pastryListener = new PastryButtonListener();
+		pastryButton.addActionListener(pastryListener);
+		
+		doneButton = new JButton("Done");
+		ActionListener doneListener = new DoneButtonListener();
+		doneButton.addActionListener(doneListener);
+		doneButton.setVisible(false);
+				
 		JPanel initialPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel();
 		JPanel receiptPanel = new JPanel();
 		JPanel donePanel = new JPanel();
+		JPanel leftPanel = new JPanel();
+		JPanel rightPanel = new JPanel();
 		
-		receiptPanel.setSize(100,400);
+		
+
+		//receiptPanel.setPreferredSize(new Dimension(800,500));
+		//receiptPanel.setMinimumSize(new Dimension(720, 350));
 		donePanel.setSize(20,40);
 		
 		buttonPanel.add(options, BorderLayout.LINE_START);
@@ -79,11 +97,17 @@ public class InitialFrame extends JFrame {
 		buttonPanel.add(teaButton,BorderLayout.PAGE_START);
 		buttonPanel.add(pastryButton);
 		
-		receiptPanel.add(receiptText);
+		receiptPanel.add(receiptPane);
 		
 		donePanel.add(doneButton);
 		
-		initialPanel.add(buttonPanel, BorderLayout.PAGE_START);
+		initialPanel.add(buttonPanel, BorderLayout.NORTH);
+		initialPanel.add(leftPanel, BorderLayout.WEST);
+		initialPanel.add(rightPanel, BorderLayout.EAST);
+		
+		leftPanel.setPreferredSize(new Dimension(40,350));
+		rightPanel.setPreferredSize(new Dimension(40,350));
+		
 		initialPanel.add(receiptPanel, BorderLayout.CENTER);
 		initialPanel.add(donePanel, BorderLayout.PAGE_END);
 		
