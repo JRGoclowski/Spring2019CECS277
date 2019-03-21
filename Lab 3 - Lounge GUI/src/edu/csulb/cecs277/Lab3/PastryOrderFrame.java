@@ -32,6 +32,11 @@ public class PastryOrderFrame extends JFrame {
 	private InitialFrame mainFrame;
 	private Receipt mainReceipt;
 	
+	/**
+	 * Constructs the Pastry Order frame initially
+	 * @param main - The initial frame of the program to update later
+	 * @param receiptArg - The receipt that the pastry must be added to
+	 */
 	public PastryOrderFrame(InitialFrame main, Receipt receiptArg) {
 		createComponentsBase();
 		mainFrame = main;
@@ -41,6 +46,9 @@ public class PastryOrderFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
+	/**
+	 * Creates the first version of the frame, without the flavor options available
+	 */
 	public void createComponentsBase() {
 		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
 		items = new JComboBox<String>(itemOps);
@@ -59,6 +67,9 @@ public class PastryOrderFrame extends JFrame {
 		this.add(mainPanel);
 	}
 	
+	/**
+	 * Creates the muffin version of the frame, with the muffin flavor options available
+	 */
 	public void createComponentsMuffin() {
 		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
 		items = new JComboBox<String>(itemOps);		
@@ -91,6 +102,9 @@ public class PastryOrderFrame extends JFrame {
 		this.add(mainPanel);
 	}
 	
+	/**
+	 * Creates the cookie version of the frame, with the cookie flavor options available
+	 */
 	public void createComponentsCookie() {
 		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
 		items = new JComboBox<String>(itemOps);		
@@ -123,6 +137,9 @@ public class PastryOrderFrame extends JFrame {
 		this.add(mainPanel);
 	}
 	
+	/**
+	 * Creates the danish version of the frame, with the danish flavor options available
+	 */
 	public void createComponentsDanish() {
 		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
 		items = new JComboBox<String>(itemOps);		
@@ -156,6 +173,9 @@ public class PastryOrderFrame extends JFrame {
 
 	}
 	
+	/**
+	 * Creates the Cheesecake version of the frame, with the Cheesecake flavor options available
+	 */
 	public void createComponentsCheesecake() {
 		String[] itemOps = {"Muffin", "Cookie", "Danish", "Cheesecake"};
 		items = new JComboBox<String>(itemOps);		
@@ -189,8 +209,16 @@ public class PastryOrderFrame extends JFrame {
 		this.add(mainPanel);
 	}
 	
+	/**
+	 * Creates an Item Combobox listener
+	 * @author Jonathan
+	 *
+	 */
 	class ItemComboListener implements ActionListener {
-		
+		 
+		/**
+		 * Updates the frame based on the selected option, showing the right flavors
+		 */
 		public void actionPerformed(ActionEvent select) {
 			String itemChoice = (String) items.getSelectedItem();
 			switch (itemChoice) {
@@ -218,7 +246,17 @@ public class PastryOrderFrame extends JFrame {
 		}
 	}
 	
+	/**
+	 * Creates an save button listener
+	 * @author Jonathan
+	 *
+	 */
 	class SaveButtonListener implements ActionListener {
+		
+		/**
+		 * Creates a Pastry Item, adds it to the receipt,
+		 * updates the initial frame, and closes the frame
+		 */
 		public void actionPerformed(ActionEvent click) {
 			PastryItem addPastry = new PastryItem((String)items.getSelectedItem(), 
 					(String)flavors.getSelectedItem(), heatOption.isSelected());
@@ -230,8 +268,16 @@ public class PastryOrderFrame extends JFrame {
 		}
 	} 
 	
+	/**
+	 * Creates an cancel button listener
+	 * @author Jonathan
+	 *
+	 */
 	class CancelButtonListener implements ActionListener {
 		
+		/**
+		  * updates the initial frame, and closes the frame
+		  */
 		public void actionPerformed(ActionEvent click) {
 			mainFrame.update();
 			setVisible(false);

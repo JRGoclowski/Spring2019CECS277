@@ -31,8 +31,15 @@ public class CoffeeOrderFrame extends JFrame {
 	InitialFrame mainFrame;
 	Receipt mainReceipt;
 	
-	public CoffeeOrderFrame(InitialFrame mFrame, Receipt receiptArg) {
-		mainFrame = mFrame;
+	/**
+	 * Constructs a Tea Order Frame to build a tea drink
+	 * @param main - the initial frame so that it can be
+	 *  updated when drink is made
+	 * @param receiptArg - The receipt that the drinks will
+	 * be tracked on
+	 */
+	public CoffeeOrderFrame(InitialFrame main, Receipt receiptArg) {
+		mainFrame = main;
 		mainReceipt = receiptArg;
 		createComponents();
 		this.setTitle("New Coffee Order");
@@ -40,6 +47,10 @@ public class CoffeeOrderFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
+	/**
+	 * Adds all the features of the coffee order frame, and 
+	 * Formats it appropriately
+	 */
 	public void createComponents() {
 		instructions = new JLabel("Special Instructions: ");
 		
@@ -89,17 +100,36 @@ public class CoffeeOrderFrame extends JFrame {
 		
 		this.add(panel);
 	}
-
+	
+	/**
+	 * Creates an cancel button listener
+	 * @author Jonathan
+	 *
+	 */
 	class CancelButtonListener implements ActionListener {
 		
+		/**
+		 * Button click listener that activates when the cancel is clicked
+		 * updates the initial frame, and close the coffee frame
+		 */
 		public void actionPerformed(ActionEvent click) {
 			mainFrame.update();
 			setVisible(false);
 		}
 	}
 	
+	/**
+	 * Creates a save button listener
+	 * @author Jonathan
+	 *
+	 */
 	class SaveButtonListener implements ActionListener {
 		
+		/**
+		 * Button click listener that activates when the save is clicked
+		 * Creates a coffee Drink based on current frame features, adds it
+		 * to the receipt, updates the initial frame, and closes the coffee window
+		 */
 		public void actionPerformed(ActionEvent click) {
 			drinkFeatures[0] = (String) size.getSelectedItem();
 			drinkFeatures[1] = (String) flavors.getSelectedItem();
@@ -124,6 +154,10 @@ public class CoffeeOrderFrame extends JFrame {
 		}
 	} 
 	
+	/**
+	 * Returns the drink features array
+	 * @return String[] - drink features array
+	 */
 	public String[] getDrinkFeatures() {
 		return drinkFeatures;
 	}

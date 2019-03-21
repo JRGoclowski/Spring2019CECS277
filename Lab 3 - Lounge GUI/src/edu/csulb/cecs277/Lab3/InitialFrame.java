@@ -32,7 +32,9 @@ public class InitialFrame extends JFrame {
 	
 	static private InitialFrame iF;
 	
-	
+	/**
+	 * Constructs an initial frame for the order to run on
+	 */
 	public InitialFrame() {
 		createComponents();
 		mReceipt = new Receipt();
@@ -41,6 +43,9 @@ public class InitialFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Updates the frame to show changes to the order
+	 */
 	public void update() {
 		doneButton.setVisible(true);
 		if (!mReceipt.isEmpty()) {
@@ -51,6 +56,9 @@ public class InitialFrame extends JFrame {
 		iF.repaint();
 	}
 	
+	/**
+	 * Creates the initial frame with all the desired components
+	 */
 	private void createComponents() {
 		options = new JLabel("Select an item to purchase: ");
 		receiptText = new JTextArea();
@@ -86,10 +94,6 @@ public class InitialFrame extends JFrame {
 		JPanel leftPanel = new JPanel();
 		JPanel rightPanel = new JPanel();
 		
-		
-
-		//receiptPanel.setPreferredSize(new Dimension(800,500));
-		//receiptPanel.setMinimumSize(new Dimension(720, 350));
 		donePanel.setSize(20,40);
 		
 		buttonPanel.add(options, BorderLayout.LINE_START);
@@ -114,32 +118,66 @@ public class InitialFrame extends JFrame {
 		this.add(initialPanel);		
 	}
 	
+	/**
+	 * Creates the Coffee Button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class CoffeeButtonListener implements ActionListener {
 		
+		/**
+		 * Creates a new Coffee Order frame and makes it visible
+		 */
 		public void actionPerformed(ActionEvent click) {
 			CoffeeOrderFrame cF = new CoffeeOrderFrame(iF, mReceipt);
 			cF.setVisible(true);
 		}
 	}
 	
+	/**
+	 * Creates the Tea Button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class TeaButtonListener implements ActionListener {
 		
+		/**
+		 * Creates a new Tea Order frame and makes it visible
+		 */
 		public void actionPerformed(ActionEvent click) {
 			TeaOrderFrame tF = new TeaOrderFrame(iF, mReceipt);
 			tF.setVisible(true);
 		}
 	}
 	
+	/**
+	 * Creates the Pastry Button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class PastryButtonListener implements ActionListener {
 		
+		/**
+		 * Creates a new Pastry Order frame and makes it visible
+		 */
 		public void actionPerformed(ActionEvent click) {
 			PastryOrderFrame pF = new PastryOrderFrame(iF, mReceipt);
 			pF.setVisible(true);
 		}
 	}
 	
+	/**
+	 * Creates the Done Button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class DoneButtonListener implements ActionListener {
 		
+		/**
+		 * If the order is not empty, Creates a finalize Order 
+		 * frame and makes it visible, otherwise it closes the 
+		 * program
+		 */
 		public void actionPerformed(ActionEvent click) {
 			if (!mReceipt.isEmpty()) {
 				FinalizeOrderFrame fF = new FinalizeOrderFrame(mReceipt);
@@ -151,10 +189,17 @@ public class InitialFrame extends JFrame {
 		}
 	}
 	
+	/**
+	 * returns the receipt of the order
+	 * @return
+	 */
 	public Receipt getMReceipt() {
 		return mReceipt;
 	}
 	
+	/**
+	 * Runs the program
+	 */
 	public static void main (String[] args) {
 		iF = new InitialFrame();
 		iF.setVisible(true);

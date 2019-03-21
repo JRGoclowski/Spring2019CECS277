@@ -6,12 +6,22 @@ public class PastryItem extends Item
 	boolean isHeated;
 	static final double HEAT_PRICE = 0.25;
 	
+	/**
+	 * Constructs a Pastry Item using the super consructor, and assigning the other
+	 * instance variables
+	 * @param name - The name describing the type of pastry
+	 * @param flavorString - The flavor chosen of the pasrty
+	 * @param heated - the boolean showing if the item is heated or not
+	 */
 	protected PastryItem(String name, String flavorString, boolean heated) {
 		super.setName(name);
 		flavor = flavorString;
 		isHeated = heated;
 	}
 	
+	/**
+	 * Returns the cost of the pastry item based on it's instance variables
+	 */
 	public double calculateCost() {
 		double cost = 0;
 		switch (name) {
@@ -30,25 +40,27 @@ public class PastryItem extends Item
 		return cost;
 	}
 	
+	/**
+	 * Returns whether or not the item is heated
+	 * @return boolean - whether or not the item is heated
+	 */
 	public boolean isHeated() {
 		return isHeated;
 	}
 	
-
+	/**
+	 * Returns the flavor of the item
+	 * @return String - the flavor of the item
+	 */
 	public String getFlavor() {
 		return flavor;
 	}
-
+	
+	/**
+	 * Returns a string form of the Item's description
+	 */
 	public String toString() {
 		return flavor + super.getName();
-		/*
-		 * String nameString = getName() +  " (" 
-		 * if (isHeated) {
-		 * 		nameString += "heated)"
-		 * }
-		 * else {
-		 * 		nameString += "unheated)"
-		 * }*/
 	}
 	
 }

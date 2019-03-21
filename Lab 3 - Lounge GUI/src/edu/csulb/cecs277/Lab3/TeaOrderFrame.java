@@ -44,6 +44,13 @@ public class TeaOrderFrame extends JFrame {
 	private Receipt mainReceipt;
 	private String[] drinkFeatures = new String[4];
 	
+	/**
+	 * Constructs a Tea Order Frame to build a tea drink
+	 * @param main - the initial frame so that it can be
+	 *  updated when drink is made
+	 * @param receiptArg - The receipt that the drinks will
+	 * be tracked on
+	 */
 	public TeaOrderFrame(InitialFrame main, Receipt receiptArg) {
 		createComponents();
 		mainFrame = main;
@@ -53,6 +60,10 @@ public class TeaOrderFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
+	/**
+	 * Adds all the features of the tea order frame, and 
+	 * Formats it appropriately
+	 */
 	public void createComponents() {
 		
 		String[] flavorOps = {"Green", "Black", "Jasmine Green", "Rose", "Oolong"};
@@ -108,16 +119,35 @@ public class TeaOrderFrame extends JFrame {
 		this.add(panel);
 	}
 	
+	/**
+	 * Creates an cancel button listener
+	 * @author Jonathan
+	 *
+	 */
 	class CancelButtonListener implements ActionListener {
 		
+		/**
+		 * Button click listener that activates when the cancel is clicked
+		 * updates the initial frame, and close the tea frame
+		 */
 		public void actionPerformed(ActionEvent click) {
 			mainFrame.update();
 			setVisible(false);
 		}
 	}
 	
+	/**
+	 * Creates a save button listener
+	 * @author Jonathan
+	 *
+	 */
 	class SaveButtonListener implements ActionListener {
 		
+		/**
+		 * Button click listener that activates when the save is clicked
+		 * Creates a tea Drink based on current frame features, adds it
+		 * to the receipt, updates the initial frame, and closes the tea window
+		 */
 		public void actionPerformed(ActionEvent click) {
 			drinkFeatures[0] = (String) size.getSelectedItem();
 			drinkFeatures[1] = (String) flavors.getSelectedItem();

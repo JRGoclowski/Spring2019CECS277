@@ -46,7 +46,10 @@ public class FinalizeOrderFrame extends JFrame {
 	
 	private String grandString, receiptString;
 	
-		
+	/**
+	 * Constructs the Finalize order frame to finish the order and pay
+	 * @param receiptArg - the receipt of the order to finalize
+	 */
 	public FinalizeOrderFrame(Receipt receiptArg) {
 		mainReceipt = receiptArg;
 
@@ -61,6 +64,9 @@ public class FinalizeOrderFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
+	/**
+	 * creates all the components on the finalize order frame before payment
+	 */
 	public void createComponents() {
 		amountDueLabel = new JLabel("Amount Due: $");
 		totalCostLabel = new JLabel(grandString);
@@ -97,6 +103,9 @@ public class FinalizeOrderFrame extends JFrame {
 		this.add(initialPanel);
 	}
 	
+	/**
+	 * Updates the frame in the case of last payment being insufficient
+	 */
 	public void updateInsuff() {
 		totalPanel.removeAll();
 		totalPanel.revalidate();
@@ -112,6 +121,9 @@ public class FinalizeOrderFrame extends JFrame {
 		initialPanel.repaint();
 	}
 	
+	/**
+	 * Updates the frame in the case that the last payment
+	 */
 	public void updatePaid() {
 		totalPanel.removeAll();
 		payPanel.removeAll();
@@ -138,8 +150,17 @@ public class FinalizeOrderFrame extends JFrame {
 		initialPanel.repaint();
 	}
 	
+	/**
+	 * Creates a pay button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class PayButtonListener implements ActionListener {
 		
+		/**
+		 * Checks the payment currently put into the payment field, and 
+		 * changes the frame according to that amount
+		 */
 		public void actionPerformed(ActionEvent click) {
 			paymentField.revalidate();
 			paymentOffered = Double.parseDouble(paymentField.getText()); 
@@ -169,9 +190,17 @@ public class FinalizeOrderFrame extends JFrame {
 			}
 		}
 	}
-	
+	 
+	/**
+	 * Creates the exit button Listener
+	 * @author Jonathan
+	 *
+	 */
 	class ExitButtonListener implements ActionListener {
 		
+		/**
+		 * Closes the frame and program
+		 */
 		public void actionPerformed(ActionEvent click) {
 			System.exit(0);
 		}

@@ -6,29 +6,43 @@ public class TeaItem extends DrinkItem
 {
 	ArrayList <String> toppings = new ArrayList<String>();
 	
+	/**
+	 * Default Constructor, initializing values to the super default values
+	 */
 	public TeaItem() {
 		super();
 	}
 	
 	/**
-	 * 
-	 * @param size
+	 * Constructs a tea item, without any toppings
+	 * @param size - Single letter representation of size (S,M or L)
 	 * @param flavor - Single word, (e.g. "Green") to describe the type of tea.
-	 * @param sweetness
-	 * @param milk
+	 * @param sweetness - A string that represents the fraction of sweetness
+	 * @param milk - The kind of milk that the drink has
 	 */
 	public TeaItem(String size, String flavor, String sweetness, String milk) {
 		super("Tea", size, flavor, sweetness, milk);
 	}
 	
+	/**
+	 * Adds a topping to the drink
+	 * @param addition - String representation of the topping to be added
+	 */
 	public void addTopping(String addition) {
 		toppings.add(addition);
 	}
 	
+	/**
+	 * Returns the ArrayList of added toppings
+	 * @return ArrayList<String> - The toppings added
+	 */
 	public ArrayList<String> getToppings() {
 		return toppings;
 	}
 
+	/**
+	 * Returns the cost of the drink based on the object's values
+	 */
 	public double calculateCost() {
 		double total = 0;
 		switch (getSize()) {
@@ -44,25 +58,10 @@ public class TeaItem extends DrinkItem
 		return total;
 	}
 	
+	/**
+	 * Returns a simple string form of the drink that describes its flavor and size
+	 */
 	public String toString() {
-		/*String teaName = getSize() + " " + getFlavor() + " Tea " + getSweetness() + " with " + getMilk () + " and "; 
-		if (toppings.isEmpty())
-			{
-				teaName += "no toppings";
-			}
-		else if (toppings.size() == 1)
-			{
-				teaName += toppings.get(0);
-			}
-		else
-			{
-				for (int i = 0; i < toppings.size() - 1 ; i ++)
-				{
-					teaName += (toppings.get(i)) + ", ";
-				}
-				teaName += ("and " + toppings.get(toppings.size() - 1));
-			}
-		return teaName;*/
 		return getFlavor() + " Tea (" + getSize() + ")";
 	}
 }
